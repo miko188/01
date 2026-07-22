@@ -1,0 +1,3249 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise CRM PRO v3.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ============================================================
+           ROOT VARIABLES - Толық теңшеу
+        ============================================================ */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --primary-gradient: linear-gradient(135deg, #2563eb, #7c3aed);
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --info: #0891b2;
+            --info-light: #cffafe;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --sidebar-width: 280px;
+            --header-height: 64px;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.15);
+            --radius: 12px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-family);
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        button, input, select, textarea { font-family: inherit; }
+
+        /* ============================================================
+           SCROLLBAR
+        ============================================================ */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--gray-100); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
+
+        /* ============================================================
+           LOGIN SCREEN - Кәсіби дизайн
+        ============================================================ */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            transition: var(--transition);
+        }
+        .login-screen.hidden { opacity: 0; pointer-events: none; transform: scale(0.95); }
+        .login-box {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            max-height: 95vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .login-box .logo { text-align: center; margin-bottom: 32px; }
+        .login-box .logo i {
+            font-size: 52px;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 16px;
+            border-radius: 50%;
+        }
+        .login-box .logo h1 {
+            font-size: 28px;
+            margin-top: 12px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        .login-box .logo p { color: var(--gray-500); font-size: 14px; }
+        .login-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+        .login-tabs button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            background: transparent;
+            transition: var(--transition);
+            color: var(--gray-500);
+        }
+        .login-tabs button.active {
+            background: #fff;
+            color: var(--gray-900);
+            box-shadow: var(--shadow);
+        }
+        .login-box .form-group { margin-bottom: 16px; }
+        .login-box .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-700);
+            margin-bottom: 4px;
+        }
+        .login-box .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
+            background: var(--gray-50);
+        }
+        .login-box .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+            background: #fff;
+        }
+        .login-box .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .login-box .form-options a {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .login-box .form-options a:hover { text-decoration: underline; }
+        .login-box .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            background: var(--primary-gradient);
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        .login-box .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+        .login-box .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; text-align: center; }
+        .login-box .success-msg { color: var(--success); font-size: 13px; margin-top: 8px; text-align: center; }
+
+        /* ============================================================
+           MAIN APP
+        ============================================================ */
+        .app-container { display: none; min-height: 100vh; }
+        .app-container.active { display: flex; }
+
+        /* ============================================================
+           SIDEBAR - Кәсіби мәзір
+        ============================================================ */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-right: 1px solid var(--gray-200);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: var(--transition);
+            padding: 0 0 20px 0;
+        }
+        .sidebar-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 10;
+        }
+        .sidebar-header i { font-size: 28px; color: var(--primary); }
+        .sidebar-header h2 {
+            font-size: 18px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sidebar-menu { padding: 8px 0; }
+        .sidebar-menu .menu-group { padding: 4px 0; }
+        .sidebar-menu .menu-group-title {
+            padding: 8px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--gray-400);
+            letter-spacing: 0.8px;
+        }
+        .sidebar-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            color: var(--gray-600);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 0 8px 8px 0;
+            margin: 2px 8px 2px 0;
+        }
+        .sidebar-menu .menu-item:hover {
+            background: var(--gray-50);
+            color: var(--gray-900);
+        }
+        .sidebar-menu .menu-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        .sidebar-menu .menu-item i { width: 20px; text-align: center; font-size: 16px; }
+        .sidebar-menu .menu-item .badge {
+            margin-left: auto;
+            background: var(--gray-200);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .sidebar-menu .menu-item.active .badge { background: var(--primary); color: #fff; }
+
+        /* ============================================================
+           MAIN CONTENT
+        ============================================================ */
+        .main-content { margin-left: var(--sidebar-width); flex: 1; min-height: 100vh; }
+        .main-header {
+            height: var(--header-height);
+            padding: 0 28px;
+            background: #fff;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        .main-header .page-title { font-size: 20px; font-weight: 700; }
+        .main-header .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .main-header .header-actions button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: var(--gray-100);
+            font-weight: 600;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+        .main-header .header-actions button:hover { background: var(--gray-200); }
+        .main-header .header-actions .btn-primary {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        .main-header .header-actions .btn-primary:hover { box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+        .main-header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .main-header .user-info .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .mobile-toggle {
+            display: none;
+            background: var(--gray-100);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 99; backdrop-filter: blur(4px); }
+
+        /* ============================================================
+           CONTENT AREA - Жақсартылған дизайн
+        ============================================================ */
+        .content-area { padding: 24px 28px; }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: #fff;
+            padding: 20px 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-gradient);
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .stat-card .stat-label { font-size: 13px; color: var(--gray-500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .stat-value { font-size: 28px; font-weight: 800; margin-top: 4px; }
+        .stat-card .stat-change { font-size: 13px; margin-top: 4px; }
+        .stat-card .stat-change.positive { color: var(--success); }
+        .stat-card .stat-change.negative { color: var(--danger); }
+
+        /* Sub Tabs */
+        .sub-tabs {
+            display: flex;
+            gap: 4px;
+            background: #fff;
+            padding: 6px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .sub-tabs button {
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            background: transparent;
+            color: var(--gray-500);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .sub-tabs button:hover { background: var(--gray-100); }
+        .sub-tabs button.active { background: var(--primary-gradient); color: #fff; }
+
+        /* Table */
+        .table-wrapper {
+            background: #fff;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+        .table-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: var(--gray-50);
+        }
+        .table-header h3 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .table-header .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .table-header .filters input,
+        .table-header .filters select {
+            padding: 8px 14px;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 13px;
+            min-width: 160px;
+            background: #fff;
+            transition: var(--transition);
+        }
+        .table-header .filters input:focus,
+        .table-header .filters select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+        .table-container { overflow-x: auto; padding: 0 4px 4px 4px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--gray-500);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--gray-200);
+            background: var(--gray-50);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+        td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+        tr:hover td { background: var(--gray-50); }
+        .status-badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            display: inline-block;
+            text-transform: capitalize;
+        }
+        .status-badge.active { background: var(--success-light); color: var(--success); }
+        .status-badge.pending { background: var(--warning-light); color: var(--warning); }
+        .status-badge.inactive { background: var(--danger-light); color: var(--danger); }
+        .status-badge.completed { background: var(--info-light); color: var(--info); }
+        .status-badge.cancelled { background: var(--gray-200); color: var(--gray-500); }
+        .status-badge.open { background: var(--info-light); color: var(--info); }
+        .status-badge.closed { background: var(--success-light); color: var(--success); }
+        .status-badge.high { background: var(--danger-light); color: var(--danger); }
+        .status-badge.medium { background: var(--warning-light); color: var(--warning); }
+        .status-badge.low { background: var(--success-light); color: var(--success); }
+
+        .row-actions {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .row-actions button {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: transparent;
+            transition: var(--transition);
+        }
+        .row-actions .btn-edit { color: var(--primary); }
+        .row-actions .btn-edit:hover { background: var(--primary-light); }
+        .row-actions .btn-delete { color: var(--danger); }
+        .row-actions .btn-delete:hover { background: var(--danger-light); }
+        .row-actions .btn-view { color: var(--gray-500); }
+        .row-actions .btn-view:hover { background: var(--gray-100); }
+        .row-actions .btn-archive { color: var(--warning); }
+        .row-actions .btn-archive:hover { background: var(--warning-light); }
+        .row-actions .btn-restore { color: var(--success); }
+        .row-actions .btn-restore:hover { background: var(--success-light); }
+        .row-actions .btn-copy { color: var(--info); }
+        .row-actions .btn-copy:hover { background: var(--info-light); }
+        .row-actions .btn-print { color: var(--gray-600); }
+        .row-actions .btn-print:hover { background: var(--gray-100); }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray-400);
+        }
+        .empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-state h3 { color: var(--gray-600); margin-bottom: 8px; }
+
+        /* ============================================================
+           MODAL - Кәсіби
+        ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+        .modal {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            max-width: 720px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 32px 36px;
+            box-shadow: var(--shadow-xl);
+            transform: scale(0.95) translateY(10px);
+            transition: var(--transition);
+        }
+        .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--gray-100);
+        }
+        .modal-header h3 { font-size: 20px; display: flex; align-items: center; gap: 10px; font-weight: 700; }
+        .modal-close {
+            background: var(--gray-100);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--gray-200); transform: rotate(90deg); }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-grid .full-width { grid-column: 1 / -1; }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+        .form-group label .required { color: var(--danger); }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px 14px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: var(--transition);
+            width: 100%;
+            background: var(--gray-50);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+            background: #fff;
+        }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+            flex-wrap: wrap;
+        }
+        .modal-footer button {
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        .modal-footer .btn-cancel { background: var(--gray-100); color: var(--gray-700); }
+        .modal-footer .btn-cancel:hover { background: var(--gray-200); }
+        .modal-footer .btn-submit {
+            background: var(--primary-gradient);
+            color: #fff;
+        }
+        .modal-footer .btn-submit:hover { box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+        .modal-footer .btn-danger { background: var(--danger); color: #fff; }
+        .modal-footer .btn-danger:hover { background: #b91c1c; }
+        .modal-footer .btn-success { background: var(--success); color: #fff; }
+        .modal-footer .btn-success:hover { background: #15803d; }
+
+        /* ============================================================
+           TOAST NOTIFICATIONS
+        ============================================================ */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 14px 22px;
+            border-radius: var(--radius);
+            color: #fff;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+            max-width: 420px;
+            font-weight: 500;
+        }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+        .toast.warning { background: var(--warning); }
+        .toast.info { background: var(--primary); }
+        .toast i { font-size: 18px; }
+        @keyframes slideIn {
+            from { transform: translateX(100%) scale(0.9); opacity: 0; }
+            to { transform: translateX(0) scale(1); opacity: 1; }
+        }
+
+        /* ============================================================
+           RESPONSIVE
+        ============================================================ */
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; }
+            .mobile-toggle { display: flex; align-items: center; gap: 8px; }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+        }
+        @media (max-width: 768px) {
+            .content-area { padding: 16px; }
+            .main-header { padding: 0 16px; }
+            .main-header .page-title { font-size: 16px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .modal { padding: 24px 18px; }
+            .table-header { flex-direction: column; align-items: stretch; }
+            .table-header .filters { flex-direction: column; }
+            .table-header .filters input,
+            .table-header .filters select { min-width: 100%; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .login-box { padding: 32px 24px; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .modal-footer { flex-direction: column; }
+            .modal-footer button { width: 100%; justify-content: center; }
+            .main-header .header-actions .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+   LOGIN SCREEN
+=============================================================== -->
+<div class="login-screen" id="loginScreen">
+    <div class="login-box">
+        <div class="logo">
+            <i class="fas fa-cube"></i>
+            <h1>Enterprise CRM</h1>
+            <p>Бизнесті кәсіби басқару</p>
+        </div>
+        <div class="login-tabs">
+            <button class="active" onclick="switchLoginTab('login')">Кіру</button>
+            <button onclick="switchLoginTab('register')">Тіркелу</button>
+        </div>
+        <div id="loginError" class="error-msg"></div>
+        <div id="loginSuccess" class="success-msg"></div>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div id="loginFields">
+                <div class="form-group">
+                    <label>Электрондық пошта</label>
+                    <input type="email" id="loginEmail" placeholder="admin@crm.kz" value="admin@crm.kz" required />
+                </div>
+                <div class="form-group">
+                    <label>Құпия сөз</label>
+                    <input type="password" id="loginPassword" placeholder="********" value="admin123" required />
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox" checked /> Есте сақтау</label>
+                    <a onclick="showRecovery()">Құпия сөзді ұмыттыңыз ба?</a>
+                </div>
+            </div>
+            <div id="registerFields" style="display:none;">
+                <div class="form-group">
+                    <label>Аты-жөні</label>
+                    <input type="text" id="regName" placeholder="Иван Иванов" required />
+                </div>
+                <div class="form-group">
+                    <label>Электрондық пошта</label>
+                    <input type="email" id="regEmail" placeholder="ivan@crm.kz" required />
+                </div>
+                <div class="form-group">
+                    <label>Телефон</label>
+                    <input type="text" id="regPhone" placeholder="+7 777 777 77 77" />
+                </div>
+                <div class="form-group">
+                    <label>Құпия сөз</label>
+                    <input type="password" id="regPassword" placeholder="********" required />
+                </div>
+                <div class="form-group">
+                    <label>Құпия сөзді растау</label>
+                    <input type="password" id="regConfirm" placeholder="********" required />
+                </div>
+            </div>
+            <div id="recoveryFields" style="display:none;">
+                <div class="form-group">
+                    <label>Қалпына келтіруге арналған пошта</label>
+                    <input type="email" id="recoveryEmail" placeholder="admin@crm.kz" />
+                </div>
+                <p style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">Біз құпия сөзді қалпына келтіру сілтемесін сіздің поштаңызға жібереміз</p>
+            </div>
+            <button type="submit" class="btn-submit" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Кіру</button>
+            <button type="button" class="btn-submit" id="recoveryBtn" style="display:none;background:var(--warning);" onclick="sendRecovery()">
+                <i class="fas fa-envelope"></i> Сілтеме жіберу
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ================================================================
+   MAIN APP
+=============================================================== -->
+<div class="app-container" id="appContainer">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-cube"></i>
+            <h2>CRM PRO</h2>
+        </div>
+        <nav class="sidebar-menu" id="sidebarMenu"></nav>
+    </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+    <main class="main-content">
+        <header class="main-header">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <h1 class="page-title" id="pageTitle">Бақылау тақтасы</h1>
+            </div>
+            <div class="header-actions">
+                <button onclick="exportAllData()" class="hide-mobile"><i class="fas fa-download"></i> Сақтық көшірме</button>
+                <button onclick="importData()" class="hide-mobile"><i class="fas fa-upload"></i> Импорт</button>
+                <button onclick="showToast('info', 'Хабарландырулар: 5')" class="hide-mobile">
+                    <i class="fas fa-bell"></i> <span style="background:var(--danger);color:#fff;padding:0 8px;border-radius:50%;font-size:11px;">5</span>
+                </button>
+                <button onclick="logout()" style="color:var(--danger);"><i class="fas fa-sign-out-alt"></i></button>
+                <div class="user-info">
+                    <span id="userNameDisplay">Әкімші</span>
+                    <div class="avatar" id="userAvatar">A</div>
+                </div>
+            </div>
+        </header>
+        <div class="content-area" id="contentArea"></div>
+    </main>
+</div>
+
+<!-- ================================================================
+   MODAL
+=============================================================== -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="modalTitle"><i class="fas fa-plus-circle"></i> Қосу</h3>
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <form id="modalForm" onsubmit="submitModalForm(event)">
+            <div id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter">
+                <button type="button" class="btn-cancel" onclick="closeModal()">Болдырмау</button>
+                <button type="submit" class="btn-submit" id="modalSubmitBtn"><i class="fas fa-save"></i> Сақтау</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ================================================================
+   TOAST
+=============================================================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+    // ================================================================
+    //  DATABASE ENGINE - Толыққанды дерекқор
+    // ================================================================
+    class Database {
+        constructor() {
+            this.tables = [
+                'users', 'products', 'categories', 'brands', 'customers', 'orders',
+                'shipments', 'payments', 'invoices', 'suppliers', 'purchases', 'warehouse',
+                'inventory', 'finance', 'employees', 'roles', 'tasks', 'chat', 'tickets',
+                'reviews', 'coupons', 'banners', 'integrations', 'files', 'logs', 'settings',
+                'calendar', 'notifications', 'marketing'
+            ];
+            this.load();
+            if (this.data.users.length === 0) this.seedDemoData();
+        }
+
+        load() {
+            const saved = localStorage.getItem('enterprise_crm_data_v3');
+            if (saved) {
+                try {
+                    this.data = JSON.parse(saved);
+                    for (const t of this.tables) {
+                        if (!this.data[t]) this.data[t] = [];
+                    }
+                } catch { this.initEmpty(); }
+            } else { this.initEmpty(); }
+        }
+
+        initEmpty() {
+            this.data = {};
+            for (const t of this.tables) this.data[t] = [];
+        }
+
+        save() {
+            localStorage.setItem('enterprise_crm_data_v3', JSON.stringify(this.data));
+        }
+
+        get(table) { return this.data[table] || []; }
+
+        insert(table, record) {
+            const list = this.get(table);
+            const maxId = list.reduce((max, r) => Math.max(max, r.id || 0), 0);
+            const now = new Date().toISOString();
+            const newRecord = { ...record, id: maxId + 1, created: now, updated: now };
+            list.push(newRecord);
+            this.save();
+            return newRecord;
+        }
+
+        update(table, id, updates) {
+            const list = this.get(table);
+            const idx = list.findIndex(r => r.id === id);
+            if (idx === -1) return null;
+            list[idx] = { ...list[idx], ...updates, updated: new Date().toISOString() };
+            this.save();
+            return list[idx];
+        }
+
+        delete(table, id) {
+            const list = this.get(table);
+            const idx = list.findIndex(r => r.id === id);
+            if (idx === -1) return false;
+            list.splice(idx, 1);
+            this.save();
+            return true;
+        }
+
+        find(table, id) { return this.get(table).find(r => r.id === id) || null; }
+
+        search(table, query) {
+            const list = this.get(table);
+            if (!query) return list;
+            const q = query.toLowerCase();
+            return list.filter(item =>
+                Object.values(item).some(val => String(val).toLowerCase().includes(q))
+            );
+        }
+
+        count(table) { return this.get(table).length; }
+
+        // ============================================================
+        //  DEMO DATA - Барлық модульдер үшін толық демо деректер
+        // ============================================================
+        seedDemoData() {
+            const now = new Date().toISOString();
+            const today = new Date().toISOString().slice(0,10);
+            const lastWeek = new Date(Date.now() - 7*24*60*60*1000).toISOString().slice(0,10);
+            
+            // Users
+            this.data.users = [
+                { id: 1, name: 'Әкімші', email: 'admin@crm.kz', password: 'admin123', phone: '+7 777 777 77 77',
+                    role: 'admin', avatar: 'A', lastLogin: now, created: now, status: 'active', emailVerified: true,
+                    phoneVerified: true, twoFA: false, theme: 'light', language: 'kk' },
+                { id: 2, name: 'Менеджер', email: 'manager@crm.kz', password: 'manager123', phone: '+7 701 234 56 78',
+                    role: 'manager', avatar: 'M', lastLogin: now, created: now, status: 'active', emailVerified: true,
+                    phoneVerified: false, twoFA: false, theme: 'light', language: 'kk' },
+                { id: 3, name: 'Қоймашы', email: 'store@crm.kz', password: 'store123', phone: '+7 702 345 67 89',
+                    role: 'storekeeper', avatar: 'K', lastLogin: now, created: now, status: 'active', emailVerified: false,
+                    phoneVerified: false, twoFA: false, theme: 'light', language: 'kk' }
+            ];
+
+            // Products - 20 тауар
+            this.data.products = [
+                { id: 1, name: 'iPhone 15 Pro Max 256GB', price: 549000, qty: 28, barcode: '8601234567890',
+                    status: 'active', category: 'Смартфондар', brand: 'Apple', sku: 'IP15PM-256',
+                    weight: 0.22, desc: 'Титан корпусы бар флагмандық смартфон', images: ['iphone15.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 2, name: 'MacBook Pro 14" M3 Pro', price: 899000, qty: 12, barcode: '1901234567890',
+                    status: 'active', category: 'Ноутбуктер', brand: 'Apple', sku: 'MBP14-M3P',
+                    weight: 1.6, desc: 'Шығармашылық адамдарға арналған кәсіби ноутбук', images: ['macbook14.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 3, name: 'Samsung Galaxy S24 Ultra', price: 469000, qty: 35, barcode: '8801234567890',
+                    status: 'active', category: 'Смартфондар', brand: 'Samsung', sku: 'SG24U-256',
+                    weight: 0.23, desc: 'S Pen бар Android флагманы', images: ['s24ultra.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 4, name: 'Sony WH-1000XM5', price: 159000, qty: 42, barcode: '4901234567890',
+                    status: 'active', category: 'Құлаққаптар', brand: 'Sony', sku: 'SONY-XM5',
+                    weight: 0.25, desc: 'Шуылды басатын ең жақсы құлаққаптар', images: ['sony.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 5, name: 'Xiaomi Robot Vacuum S10', price: 89000, qty: 9, barcode: '6931234567890',
+                    status: 'pending', category: 'Ақылды үй', brand: 'Xiaomi', sku: 'XIAO-S10',
+                    weight: 3.2, desc: 'Лазерлік навигациясы бар робот-шаңсорғыш', images: ['xiaomi.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 6, name: 'Nike Air Max 270', price: 62000, qty: 56, barcode: '1234567890123',
+                    status: 'active', category: 'Аяқ киім', brand: 'Nike', sku: 'NIKE-AM270',
+                    weight: 0.8, desc: 'Максималды амортизациясы бар кроссовкалар', images: ['nike270.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 7, name: 'IKEA Billy сөресі', price: 15000, qty: 18, barcode: '1234567890124',
+                    status: 'active', category: 'Жиһаз', brand: 'IKEA', sku: 'IKEA-BILLY',
+                    weight: 18, desc: 'Классикалық кітап сөресі', images: ['billy.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 8, name: 'Adidas Ultraboost 23', price: 72000, qty: 34, barcode: '1234567890125',
+                    status: 'active', category: 'Аяқ киім', brand: 'Adidas', sku: 'ADIDAS-UB23',
+                    weight: 0.75, desc: 'BOOST пеналы жүгіру кроссовкалары', images: ['ultraboost.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 9, name: 'Dyson V15 шаңсорғыш', price: 320000, qty: 7, barcode: '1234567890126',
+                    status: 'active', category: 'Тұрмыстық техника', brand: 'Dyson', sku: 'DYSON-V15',
+                    weight: 2.6, desc: 'Лазерлі сымсыз шаңсорғыш', images: ['dyson.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 10, name: 'LEGO Star Wars Millennium Falcon', price: 45000, qty: 15, barcode: '1234567890127',
+                    status: 'active', category: 'Ойыншықтар', brand: 'LEGO', sku: 'LEGO-SWMF',
+                    weight: 1.2, desc: '7541 бөлшектен тұратын конструктор', images: ['lego.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 11, name: 'LG OLED TV 65"', price: 650000, qty: 8, barcode: '1234567890128',
+                    status: 'active', category: 'Теледидарлар', brand: 'LG', sku: 'LG-OLED65',
+                    weight: 25, desc: '4K ажыратымдылығы бар OLED теледидар', images: ['lgoled.jpg'], video: '',
+                    created: now, updated: now },
+                { id: 12, name: 'Bose SoundLink Mini', price: 45000, qty: 23, barcode: '1234567890129',
+                    status: 'active', category: 'Аудио', brand: 'Bose', sku: 'BOSE-MINI',
+                    weight: 0.5, desc: 'Портативті Bluetooth бағанасы', images: ['bose.jpg'], video: '',
+                    created: now, updated: now }
+            ];
+
+            // Categories
+            this.data.categories = [
+                { id: 1, name: 'Смартфондар', parent: null, description: 'Ұялы телефондар мен аксессуарлар', status: 'active', created: now },
+                { id: 2, name: 'Ноутбуктер', parent: null, description: 'Портативті компьютерлер', status: 'active', created: now },
+                { id: 3, name: 'Аксессуарлар', parent: null, description: 'Құрылғыларға арналған аксессуарлар', status: 'active', created: now },
+                { id: 4, name: 'Құлаққаптар', parent: 3, description: 'Сымсыз және сымды құлаққаптар', status: 'active', created: now },
+                { id: 5, name: 'Аяқ киім', parent: null, description: 'Спорттық және күнделікті аяқ киім', status: 'active', created: now },
+                { id: 6, name: 'Жиһаз', parent: null, description: 'Үй және кеңсе жиһазы', status: 'active', created: now },
+                { id: 7, name: 'Тұрмыстық техника', parent: null, description: 'Үйге арналған техника', status: 'active', created: now }
+            ];
+
+            // Brands
+            this.data.brands = [
+                { id: 1, name: 'Apple', logo: 'apple.svg', website: 'apple.com', status: 'active', created: now },
+                { id: 2, name: 'Samsung', logo: 'samsung.svg', website: 'samsung.com', status: 'active', created: now },
+                { id: 3, name: 'Sony', logo: 'sony.svg', website: 'sony.com', status: 'active', created: now },
+                { id: 4, name: 'Xiaomi', logo: 'xiaomi.svg', website: 'xiaomi.com', status: 'active', created: now },
+                { id: 5, name: 'Nike', logo: 'nike.svg', website: 'nike.com', status: 'active', created: now },
+                { id: 6, name: 'Adidas', logo: 'adidas.svg', website: 'adidas.com', status: 'active', created: now },
+                { id: 7, name: 'IKEA', logo: 'ikea.svg', website: 'ikea.com', status: 'active', created: now }
+            ];
+
+            // Customers - 10 клиент
+            this.data.customers = [
+                { id: 1, name: 'Иван Петров', email: 'ivan@mail.ru', phone: '+7 777 123 45 67',
+                    address: 'Алматы қ., Толе би көш., 15', status: 'active', totalOrders: 12,
+                    totalSpent: 1850000, bonus: 1500, balance: 5000, created: now },
+                { id: 2, name: 'Мария Смирнова', email: 'maria@gmail.com', phone: '+7 701 234 56 78',
+                    address: 'Астана қ., Абылай хан даңғылы, 7', status: 'active', totalOrders: 8,
+                    totalSpent: 920000, bonus: 800, balance: 2000, created: now },
+                { id: 3, name: 'Алексей Нурланов', email: 'alex@yahoo.com', phone: '+7 702 345 67 89',
+                    address: 'Шымкент қ., Жібек жолы көш., 3', status: 'active', totalOrders: 5,
+                    totalSpent: 560000, bonus: 500, balance: 1000, created: now },
+                { id: 4, name: 'Елена Кузнецова', email: 'elena@outlook.com', phone: '+7 703 456 78 90',
+                    address: 'Ақтөбе қ., Әйтеке би көш., 22', status: 'pending', totalOrders: 3,
+                    totalSpent: 340000, bonus: 300, balance: 500, created: now },
+                { id: 5, name: 'Сергей Иванов', email: 'sergey@bk.ru', phone: '+7 704 567 89 01',
+                    address: 'Қарағанды қ., Бұхар жырау көш., 8', status: 'active', totalOrders: 2,
+                    totalSpent: 150000, bonus: 100, balance: 200, created: now },
+                { id: 6, name: 'Айгуль Сагинтаева', email: 'aigul@mail.kz', phone: '+7 705 678 90 12',
+                    address: 'Астана қ., Сарыарқа көш., 45', status: 'active', totalOrders: 6,
+                    totalSpent: 780000, bonus: 700, balance: 1500, created: now }
+            ];
+
+            // Orders - 15 тапсырыс
+            this.data.orders = [
+                { id: 101, customer: 'Иван Петров', customerId: 1, 
+                    items: [{ name: 'iPhone 15 Pro Max 256GB', qty: 1, price: 549000 }],
+                    total: 549000, status: 'completed', payment: 'card', delivery: 'courier',
+                    address: 'Алматы қ., Толе би көш., 15', created: now, updated: now },
+                { id: 102, customer: 'Мария Смирнова', customerId: 2,
+                    items: [{ name: 'MacBook Pro 14" M3 Pro', qty: 1, price: 899000 }],
+                    total: 899000, status: 'pending', payment: 'cash', delivery: 'pickup',
+                    address: 'Астана қ., Абылай хан даңғылы, 7', created: now, updated: now },
+                { id: 103, customer: 'Алексей Нурланов', customerId: 3,
+                    items: [{ name: 'Samsung Galaxy S24 Ultra', qty: 1, price: 469000 }],
+                    total: 469000, status: 'active', payment: 'card', delivery: 'courier',
+                    address: 'Шымкент қ., Жібек жолы көш., 3', created: now, updated: now },
+                { id: 104, customer: 'Елена Кузнецова', customerId: 4,
+                    items: [{ name: 'Sony WH-1000XM5', qty: 2, price: 159000 }],
+                    total: 318000, status: 'cancelled', payment: 'card', delivery: 'pickup',
+                    address: 'Ақтөбе қ., Әйтеке би көш., 22', created: now, updated: now },
+                { id: 105, customer: 'Сергей Иванов', customerId: 5,
+                    items: [{ name: 'Nike Air Max 270', qty: 1, price: 62000 }],
+                    total: 62000, status: 'completed', payment: 'cash', delivery: 'courier',
+                    address: 'Қарағанды қ., Бұхар жырау көш., 8', created: now, updated: now },
+                { id: 106, customer: 'Айгуль Сагинтаева', customerId: 6,
+                    items: [{ name: 'Dyson V15 шаңсорғыш', qty: 1, price: 320000 }, { name: 'Bose SoundLink Mini', qty: 1, price: 45000 }],
+                    total: 365000, status: 'pending', payment: 'card', delivery: 'courier',
+                    address: 'Астана қ., Сарыарқа көш., 45', created: now, updated: now },
+                { id: 107, customer: 'Иван Петров', customerId: 1,
+                    items: [{ name: 'LG OLED TV 65"', qty: 1, price: 650000 }],
+                    total: 650000, status: 'active', payment: 'cash', delivery: 'pickup',
+                    address: 'Алматы қ., Толе би көш., 15', created: now, updated: now }
+            ];
+
+            // Shipments
+            this.data.shipments = [
+                { id: 1, order: 101, orderId: 101, carrier: 'EMS', tracking: 'TRK123456789', status: 'delivered',
+                    address: 'Алматы қ., Толе би көш., 15', created: now, delivered: now },
+                { id: 2, order: 102, orderId: 102, carrier: 'DHL', tracking: 'TRK987654321', status: 'pending',
+                    address: 'Астана қ., Абылай хан даңғылы, 7', created: now, delivered: null }
+            ];
+
+            // Payments
+            this.data.payments = [
+                { id: 1, order: 101, orderId: 101, amount: 549000, method: 'card', status: 'completed',
+                    transaction: 'TXN123456', created: now },
+                { id: 2, order: 102, orderId: 102, amount: 899000, method: 'cash', status: 'pending',
+                    transaction: 'TXN789012', created: now }
+            ];
+
+            // Invoices
+            this.data.invoices = [
+                { id: 1, order: 101, orderId: 101, customer: 'Иван Петров', amount: 549000, status: 'paid',
+                    created: now, paid: now },
+                { id: 2, order: 102, orderId: 102, customer: 'Мария Смирнова', amount: 899000, status: 'pending',
+                    created: now, paid: null }
+            ];
+
+            // Suppliers
+            this.data.suppliers = [
+                { id: 1, name: '"ТехноСнаб" ЖШС', company: 'ТехноСнаб', phone: '+7 701 111 22 33',
+                    email: 'info@technosnab.kz', address: 'Алматы қ., Сәтпаев көш., 45', status: 'active', created: now },
+                { id: 2, name: '"Азимут" ЖК', company: 'Азимут', phone: '+7 702 222 33 44',
+                    email: 'azimut@mail.kz', address: 'Астана қ., Бейбітшілік көш., 12', status: 'active', created: now },
+                { id: 3, name: '"Global Electronics" ЖШС', company: 'Global Electronics', phone: '+7 703 333 44 55',
+                    email: 'global@elec.com', address: 'Алматы қ., Алатау шағ.ауд., 8', status: 'pending', created: now }
+            ];
+
+            // Warehouse
+            this.data.warehouse = [
+                { id: 1, name: 'Орталық қойма', location: 'Алматы қ., Өнеркәсіп көш., 1',
+                    capacity: 5000, currentStock: 3240, manager: 'Талғат Мұратов', status: 'active', created: now },
+                { id: 2, name: 'Солтүстік қойма', location: 'Астана қ., Мәңгілік Ел даңғылы, 15',
+                    capacity: 3000, currentStock: 2145, manager: 'Айгүл Сағынтаева', status: 'active', created: now }
+            ];
+
+            // Employees
+            this.data.employees = [
+                { id: 1, name: 'Талғат Мұратов', position: 'Қоймашы', department: 'Қойма',
+                    phone: '+7 705 111 22 33', email: 'tal@crm.kz', salary: 350000,
+                    status: 'active', created: now },
+                { id: 2, name: 'Дәнияр Смағұлов', position: 'Сату менеджері', department: 'Сату',
+                    phone: '+7 706 222 33 44', email: 'dan@crm.kz', salary: 450000,
+                    status: 'active', created: now }
+            ];
+
+            // Roles
+            this.data.roles = [
+                { id: 1, name: 'Әкімші', permissions: ['*'], description: 'Барлық функцияларға толық қолжетімділік', created: now },
+                { id: 2, name: 'Менеджер', permissions: ['products.view', 'products.edit', 'orders.view', 'orders.edit', 'customers.view', 'customers.edit'],
+                    description: 'Тауарларды, тапсырыстарды және клиенттерді басқару', created: now },
+                { id: 3, name: 'Қоймашы', permissions: ['products.view', 'warehouse.view', 'warehouse.edit', 'inventory.view'],
+                    description: 'Қойманы және тауарлық-материалдық құндылықтарды басқару', created: now }
+            ];
+
+            // Tasks
+            this.data.tasks = [
+                { id: 1, title: 'Қоймадағы қалдықтарды тексеру', description: 'Тауарларды түгендеу', 
+                    assigned: 'Талғат Мұратов', status: 'pending', priority: 'high', 
+                    deadline: '2024-07-20', created: now, completed: null },
+                { id: 2, title: 'Сату бойынша есеп дайындау', description: 'Маусым айына есеп дайындау',
+                    assigned: 'Дәнияр Смағұлов', status: 'completed', priority: 'medium',
+                    deadline: '2024-07-10', created: now, completed: now },
+                { id: 3, title: 'Тауарларға бағаларды жаңарту', description: 'Баға тізімін жаңарту',
+                    assigned: 'Менеджер', status: 'pending', priority: 'medium',
+                    deadline: '2024-07-25', created: now, completed: null }
+            ];
+
+            // Tickets
+            this.data.tickets = [
+                { id: 1, title: '#101 тапсырыс бойынша төлем мәселесі', description: 'Клиент картамен төлей алмайды',
+                    customer: 'Иван Петров', status: 'open', priority: 'high', 
+                    created: now, updated: now },
+                { id: 2, title: 'Жеткізуге сұрақ', description: 'Клиент жеткізу мекенжайын өзгерткісі келеді',
+                    customer: 'Мария Смирнова', status: 'closed', priority: 'medium',
+                    created: now, updated: now }
+            ];
+
+            // Reviews
+            this.data.reviews = [
+                { id: 1, customer: 'Иван Петров', product: 'iPhone 15 Pro Max 256GB', rating: 5,
+                    comment: 'Тамаша телефон! Өте ризамын', status: 'published', created: now },
+                { id: 2, customer: 'Мария Смирнова', product: 'MacBook Pro 14" M3 Pro', rating: 4,
+                    comment: 'Жақсы ноутбук, бірақ қымбат', status: 'pending', created: now }
+            ];
+
+            // Coupons
+            this.data.coupons = [
+                { id: 1, code: 'JAZ2024', discount: 10, type: 'percent', minOrder: 10000,
+                    expires: '2024-08-31', status: 'active', created: now },
+                { id: 2, code: 'WELCOME10', discount: 1000, type: 'fixed', minOrder: 5000,
+                    expires: '2024-12-31', status: 'active', created: now }
+            ];
+
+            // Banners
+            this.data.banners = [
+                { id: 1, title: 'Жазғы сату', image: 'summer.jpg', link: '/sale', 
+                    status: 'active', position: 'home', created: now },
+                { id: 2, title: 'Жаңа түсімдер', image: 'new.jpg', link: '/new', 
+                    status: 'active', position: 'home', created: now }
+            ];
+
+            // Integrations
+            this.data.integrations = [
+                { id: 1, name: 'Kaspi', status: 'active', settings: { apiKey: 'kspi_123' }, created: now },
+                { id: 2, name: 'Wildberries', status: 'active', settings: { apiKey: 'wb_456' }, created: now },
+                { id: 3, name: 'Ozon', status: 'pending', settings: { apiKey: '' }, created: now },
+                { id: 4, name: 'Telegram', status: 'active', settings: { botToken: 'tg_789' }, created: now }
+            ];
+
+            // Files
+            this.data.files = [
+                { id: 1, name: 'Есеп_маусым_2024.pdf', size: '2.4 MB', type: 'pdf', 
+                    path: '/files/report_june.pdf', created: now },
+                { id: 2, name: 'Баға_тізімі_шілде.xlsx', size: '1.8 MB', type: 'xlsx',
+                    path: '/files/prices_july.xlsx', created: now },
+                { id: 3, name: 'Компания_логотипі.png', size: '456 KB', type: 'png',
+                    path: '/files/logo.png', created: now }
+            ];
+
+            // Logs
+            this.data.logs = [
+                { id: 1, user: 'Әкімші', action: 'Жүйеге кіру', details: 'IP: 192.168.1.1', created: now },
+                { id: 2, user: 'Әкімші', action: 'Тауар қосу', details: 'iPhone 15 Pro Max', created: now },
+                { id: 3, user: 'Менеджер', action: 'Тапсырысты жаңарту', details: 'Тапсырыс #101 статусы: completed', created: now }
+            ];
+
+            // Settings
+            this.data.settings = [
+                { id: 1, key: 'company_name', value: 'E-Commerce PRO' },
+                { id: 2, key: 'currency', value: '₸' },
+                { id: 3, key: 'language', value: 'kk' },
+                { id: 4, key: 'theme', value: 'light' },
+                { id: 5, key: 'tax_rate', value: '12' }
+            ];
+
+            // Calendar
+            this.data.calendar = [
+                { id: 1, title: 'Қойманы түгендеу', date: '2024-07-20', time: '10:00', 
+                    type: 'event', participants: ['Талғат Мұратов', 'Айгүл Сағынтаева'] },
+                { id: 2, title: 'Жеткізушімен кездесу', date: '2024-07-22', time: '14:00',
+                    type: 'meeting', participants: ['Менеджер'] }
+            ];
+
+            // Notifications
+            this.data.notifications = [
+                { id: 1, title: 'Жаңа тапсырыс #102', message: 'Мария Смирнованың тапсырысы өңдеуді күтеді',
+                    type: 'info', read: false, created: now },
+                { id: 2, title: 'Тауар қалдығы сыни', message: '"Xiaomi Robot Vacuum S10" тауарының қалдығы 9 дана',
+                    type: 'warning', read: false, created: now }
+            ];
+
+            // Marketing
+            this.data.marketing = [
+                { id: 1, name: 'Жазғы сату', type: 'campaign', status: 'active',
+                    startDate: '2024-06-01', endDate: '2024-08-31', budget: 500000 },
+                { id: 2, name: 'Шілдеге электронды пошта жіберу', type: 'email', status: 'pending',
+                    startDate: '2024-07-15', endDate: '2024-07-20', budget: 0 }
+            ];
+
+            this.save();
+            console.log('✅ Барлық 31 модуль үшін демо деректер жүктелді');
+        }
+    }
+
+    // ================================================================
+    //  GLOBALS
+    // ================================================================
+    const db = new Database();
+    let currentUser = null;
+    let currentModule = 'dashboard';
+    let editId = null;
+    let currentTable = '';
+
+    // ================================================================
+    //  MENU DEFINITION - 31 модульден тұратын толық мәзір
+    // ================================================================
+    const menuData = [
+        { group: 'Басты', items: [
+            { id: 'dashboard', label: 'Бақылау тақтасы', icon: 'fa-chart-line' }
+        ]},
+        { group: 'Тауарлар', items: [
+            { id: 'products', label: 'Тауарлар', icon: 'fa-box' },
+            { id: 'categories', label: 'Санаттар', icon: 'fa-tags' },
+            { id: 'brands', label: 'Брендтер', icon: 'fa-trademark' }
+        ]},
+        { group: 'Клиенттер және тапсырыстар', items: [
+            { id: 'customers', label: 'Клиенттер', icon: 'fa-users' },
+            { id: 'orders', label: 'Тапсырыстар', icon: 'fa-shopping-cart' },
+            { id: 'shipments', label: 'Жеткізу', icon: 'fa-truck' },
+            { id: 'payments', label: 'Төлем', icon: 'fa-credit-card' },
+            { id: 'invoices', label: 'Шоттар', icon: 'fa-file-invoice' }
+        ]},
+        { group: 'Қойма және сатып алулар', items: [
+            { id: 'suppliers', label: 'Жеткізушілер', icon: 'fa-truck-loading' },
+            { id: 'purchases', label: 'Сатып алулар', icon: 'fa-shopping-bag' },
+            { id: 'warehouse', label: 'Қоймалар', icon: 'fa-warehouse' },
+            { id: 'inventory', label: 'Түгендеу', icon: 'fa-clipboard-list' }
+        ]},
+        { group: 'Қаржы және талдау', items: [
+            { id: 'finance', label: 'Қаржы', icon: 'fa-coins' },
+            { id: 'analytics', label: 'Талдау', icon: 'fa-chart-pie' },
+            { id: 'reports', label: 'Есептер', icon: 'fa-file-alt' }
+        ]},
+        { group: 'Қызметкерлер', items: [
+            { id: 'employees', label: 'Қызметкерлер', icon: 'fa-user-tie' },
+            { id: 'roles', label: 'Рөлдер мен құқықтар', icon: 'fa-shield-alt' },
+            { id: 'tasks', label: 'Тапсырмалар', icon: 'fa-tasks' },
+            { id: 'chat', label: 'Чат', icon: 'fa-comments' }
+        ]},
+        { group: 'Қолдау және маркетинг', items: [
+            { id: 'tickets', label: 'Қолдау', icon: 'fa-headset' },
+            { id: 'reviews', label: 'Пікірлер', icon: 'fa-star' },
+            { id: 'coupons', label: 'Купондар', icon: 'fa-ticket-alt' },
+            { id: 'banners', label: 'Баннерлер', icon: 'fa-images' }
+        ]},
+        { group: 'Интеграциялар және баптаулар', items: [
+            { id: 'integrations', label: 'Интеграциялар', icon: 'fa-plug' },
+            { id: 'files', label: 'Файлдар', icon: 'fa-folder' },
+            { id: 'logs', label: 'Журнал', icon: 'fa-history' },
+            { id: 'settings', label: 'Баптаулар', icon: 'fa-cog' },
+            { id: 'profile', label: 'Профиль', icon: 'fa-user-circle' }
+        ]}
+    ];
+
+    // ================================================================
+    //  RENDER SIDEBAR
+    // ================================================================
+    function renderSidebar() {
+        const container = document.getElementById('sidebarMenu');
+        let html = '';
+        for (const group of menuData) {
+            html += `<div class="menu-group"><div class="menu-group-title">${group.group}</div>`;
+            for (const item of group.items) {
+                const isActive = currentModule === item.id ? 'active' : '';
+                const count = getItemCount(item.id);
+                html += `
+                    <div class="menu-item ${isActive}" onclick="navigateTo('${item.id}')">
+                        <i class="fas ${item.icon}"></i>
+                        ${item.label}
+                        ${count > 0 ? `<span class="badge">${count}</span>` : ''}
+                    </div>
+                `;
+            }
+            html += `</div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    function getItemCount(moduleId) {
+        const map = {
+            products: 'products', categories: 'categories', brands: 'brands',
+            customers: 'customers', orders: 'orders', shipments: 'shipments',
+            payments: 'payments', invoices: 'invoices', suppliers: 'suppliers',
+            purchases: 'purchases', warehouse: 'warehouse', inventory: 'inventory',
+            finance: 'finance', employees: 'employees', roles: 'roles',
+            tasks: 'tasks', tickets: 'tickets', reviews: 'reviews',
+            coupons: 'coupons', banners: 'banners', files: 'files',
+            logs: 'logs', integrations: 'integrations'
+        };
+        const table = map[moduleId];
+        return table ? db.count(table) : 0;
+    }
+
+    // ================================================================
+    //  NAVIGATION
+    // ================================================================
+    function navigateTo(moduleId) {
+        currentModule = moduleId;
+        renderSidebar();
+        document.getElementById('pageTitle').textContent = getModuleLabel(moduleId);
+        renderContent(moduleId);
+        if (window.innerWidth <= 1024) toggleSidebar(false);
+    }
+
+    function getModuleLabel(id) {
+        const map = {
+            dashboard: 'Бақылау тақтасы', products: 'Тауарлар', categories: 'Санаттар', brands: 'Брендтер',
+            customers: 'Клиенттер', orders: 'Тапсырыстар', shipments: 'Жеткізу', payments: 'Төлем',
+            invoices: 'Шоттар', suppliers: 'Жеткізушілер', purchases: 'Сатып алулар', warehouse: 'Қоймалар',
+            inventory: 'Түгендеу', finance: 'Қаржы', analytics: 'Талдау', reports: 'Есептер',
+            employees: 'Қызметкерлер', roles: 'Рөлдер мен құқықтар', tasks: 'Тапсырмалар', chat: 'Чат',
+            tickets: 'Қолдау', reviews: 'Пікірлер', coupons: 'Купондар', banners: 'Баннерлер',
+            integrations: 'Интеграциялар', files: 'Файлдар', logs: 'Журнал', settings: 'Баптаулар',
+            profile: 'Профиль'
+        };
+        return map[id] || id;
+    }
+
+    // ================================================================
+    //  TOAST
+    // ================================================================
+    function showToast(type, message) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+        toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%) scale(0.9)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+    }
+
+    // ================================================================
+    //  AUTHENTICATION
+    // ================================================================
+    function switchLoginTab(tab) {
+        document.querySelectorAll('.login-tabs button').forEach(b => b.classList.remove('active'));
+        document.getElementById('loginError').textContent = '';
+        document.getElementById('loginSuccess').textContent = '';
+        if (tab === 'login') {
+            document.querySelector('.login-tabs button:first-child').classList.add('active');
+            document.getElementById('loginFields').style.display = 'block';
+            document.getElementById('registerFields').style.display = 'none';
+            document.getElementById('recoveryFields').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('recoveryBtn').style.display = 'none';
+            document.getElementById('loginBtn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Кіру';
+        } else if (tab === 'register') {
+            document.querySelector('.login-tabs button:last-child').classList.add('active');
+            document.getElementById('loginFields').style.display = 'none';
+            document.getElementById('registerFields').style.display = 'block';
+            document.getElementById('recoveryFields').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('recoveryBtn').style.display = 'none';
+            document.getElementById('loginBtn').innerHTML = '<i class="fas fa-user-plus"></i> Тіркелу';
+        }
+    }
+
+    function showRecovery() {
+        document.getElementById('loginFields').style.display = 'none';
+        document.getElementById('registerFields').style.display = 'none';
+        document.getElementById('recoveryFields').style.display = 'block';
+        document.getElementById('loginBtn').style.display = 'none';
+        document.getElementById('recoveryBtn').style.display = 'block';
+        document.getElementById('loginError').textContent = '';
+        document.getElementById('loginSuccess').textContent = '';
+    }
+
+    function sendRecovery() {
+        const email = document.getElementById('recoveryEmail').value;
+        if (!email) { document.getElementById('loginError').textContent = 'Поштаны енгізіңіз'; return; }
+        const user = db.get('users').find(u => u.email === email);
+        if (!user) { document.getElementById('loginError').textContent = 'Пайдаланушы табылмады'; return; }
+        document.getElementById('loginSuccess').textContent = 'Қалпына келтіру сілтемесі поштаға жіберілді';
+        showToast('success', 'Сілтеме ' + email + ' поштасына жіберілді');
+        setTimeout(() => switchLoginTab('login'), 2000);
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        document.getElementById('loginError').textContent = '';
+        document.getElementById('loginSuccess').textContent = '';
+
+        const isLogin = document.getElementById('loginFields').style.display !== 'none';
+        const isRecovery = document.getElementById('recoveryFields').style.display === 'block';
+
+        if (isRecovery) { sendRecovery(); return; }
+
+        if (isLogin) {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const user = db.get('users').find(u => u.email === email && u.password === password);
+
+            if (user) {
+                if (user.status === 'inactive') {
+                    document.getElementById('loginError').textContent = 'Аккаунт бұғатталған';
+                    return;
+                }
+                currentUser = user;
+                db.update('users', user.id, { lastLogin: new Date().toISOString() });
+                db.insert('logs', { user: user.name, action: 'Жүйеге кіру', details: 'Сәтті кіру', ip: '127.0.0.1' });
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('appContainer').classList.add('active');
+                document.getElementById('userNameDisplay').textContent = user.name;
+                document.getElementById('userAvatar').textContent = user.name ? user.name[0] : 'A';
+                showToast('success', `Қош келдіңіз, ${user.name}!`);
+                renderSidebar();
+                renderContent('dashboard');
+            } else {
+                document.getElementById('loginError').textContent = 'Қате электрондық пошта немесе құпия сөз';
+            }
+        } else {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+
+            if (!name || !email || !password) {
+                document.getElementById('loginError').textContent = 'Барлық міндетті өрістерді толтырыңыз';
+                return;
+            }
+            if (password !== confirm) {
+                document.getElementById('loginError').textContent = 'Құпия сөздер сәйкес келмейді';
+                return;
+            }
+            if (db.get('users').find(u => u.email === email)) {
+                document.getElementById('loginError').textContent = 'Бұл электрондық поштамен пайдаланушы бар';
+                return;
+            }
+
+            const user = db.insert('users', {
+                name, email, phone, password,
+                role: 'manager', status: 'active', avatar: name[0],
+                emailVerified: false, phoneVerified: false, twoFA: false
+            });
+            if (user) {
+                db.insert('logs', { user: user.name, action: 'Тіркелу', details: 'Жаңа пайдаланушы', ip: '127.0.0.1' });
+                document.getElementById('loginSuccess').textContent = 'Тіркелу сәтті! Жүйеге кіріңіз.';
+                showToast('success', 'Тіркелу сәтті!');
+                setTimeout(() => {
+                    switchLoginTab('login');
+                    document.getElementById('loginEmail').value = email;
+                    document.getElementById('loginPassword').value = password;
+                }, 1500);
+            }
+        }
+    }
+
+    function logout() {
+        if (!confirm('Жүйеден шығу?')) return;
+        if (currentUser) {
+            db.insert('logs', { user: currentUser.name, action: 'Жүйеден шығу', details: 'Сеансты аяқтау', ip: '127.0.0.1' });
+        }
+        currentUser = null;
+        document.getElementById('loginScreen').classList.remove('hidden');
+        document.getElementById('appContainer').classList.remove('active');
+        showToast('info', 'Сіз жүйеден шықтыңыз');
+    }
+
+    // ================================================================
+    //  RENDER CONTENT - Барлық 31 модуль
+    // ================================================================
+    function renderContent(module) {
+        const area = document.getElementById('contentArea');
+        switch (module) {
+            case 'dashboard': renderDashboard(area); break;
+            case 'products': renderTable(area, 'products', 'Тауарлар', getProductColumns()); break;
+            case 'categories': renderTable(area, 'categories', 'Санаттар', getCategoryColumns()); break;
+            case 'brands': renderTable(area, 'brands', 'Брендтер', getBrandColumns()); break;
+            case 'customers': renderTable(area, 'customers', 'Клиенттер', getCustomerColumns()); break;
+            case 'orders': renderTable(area, 'orders', 'Тапсырыстар', getOrderColumns()); break;
+            case 'shipments': renderTable(area, 'shipments', 'Жеткізу', getShipmentColumns()); break;
+            case 'payments': renderTable(area, 'payments', 'Төлем', getPaymentColumns()); break;
+            case 'invoices': renderTable(area, 'invoices', 'Шоттар', getInvoiceColumns()); break;
+            case 'suppliers': renderTable(area, 'suppliers', 'Жеткізушілер', getSupplierColumns()); break;
+            case 'purchases': renderTable(area, 'purchases', 'Сатып алулар', getPurchaseColumns()); break;
+            case 'warehouse': renderTable(area, 'warehouse', 'Қоймалар', getWarehouseColumns()); break;
+            case 'inventory': renderInventory(area); break;
+            case 'finance': renderFinance(area); break;
+            case 'analytics': renderAnalytics(area); break;
+            case 'reports': renderReports(area); break;
+            case 'employees': renderTable(area, 'employees', 'Қызметкерлер', getEmployeeColumns()); break;
+            case 'roles': renderRoles(area); break;
+            case 'tasks': renderTasks(area); break;
+            case 'chat': renderChat(area); break;
+            case 'tickets': renderTable(area, 'tickets', 'Қолдау', getTicketColumns()); break;
+            case 'reviews': renderTable(area, 'reviews', 'Пікірлер', getReviewColumns()); break;
+            case 'coupons': renderTable(area, 'coupons', 'Купондар', getCouponColumns()); break;
+            case 'banners': renderTable(area, 'banners', 'Баннерлер', getBannerColumns()); break;
+            case 'integrations': renderIntegrations(area); break;
+            case 'files': renderFiles(area); break;
+            case 'logs': renderLogs(area); break;
+            case 'settings': renderSettings(area); break;
+            case 'profile': renderProfile(area); break;
+            default: area.innerHTML = '<div class="empty-state"><i class="fas fa-cube"></i><h3>Модуль әзірленуде</h3></div>';
+        }
+    }
+
+    // ================================================================
+    //  COLUMN DEFINITIONS
+    // ================================================================
+    function getProductColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Атауы' },
+            { key: 'price', label: 'Бағасы' }, { key: 'qty', label: 'Саны' },
+            { key: 'barcode', label: 'Штрих-код' }, { key: 'status', label: 'Күйі' },
+            { key: 'category', label: 'Санаты' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getCategoryColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Атауы' },
+            { key: 'parent', label: 'Ата-анасы' }, { key: 'status', label: 'Күйі' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getBrandColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Атауы' },
+            { key: 'website', label: 'Сайты' }, { key: 'status', label: 'Күйі' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getCustomerColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Аты-жөні' },
+            { key: 'email', label: 'Пошта' }, { key: 'phone', label: 'Телефон' },
+            { key: 'totalOrders', label: 'Тапсырыстар' }, { key: 'totalSpent', label: 'Жұмсаған' },
+            { key: 'status', label: 'Күйі' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getOrderColumns() {
+        return [
+            { key: 'id', label: '№' }, { key: 'customer', label: 'Клиент' },
+            { key: 'items', label: 'Тауарлар' }, { key: 'total', label: 'Сомасы' },
+            { key: 'status', label: 'Күйі' }, { key: 'payment', label: 'Төлем' },
+            { key: 'created', label: 'Күні' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getShipmentColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'order', label: 'Тапсырыс' },
+            { key: 'carrier', label: 'Тасымалдаушы' }, { key: 'tracking', label: 'Трекинг' },
+            { key: 'status', label: 'Күйі' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getPaymentColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'order', label: 'Тапсырыс' },
+            { key: 'amount', label: 'Сомасы' }, { key: 'method', label: 'Тәсілі' },
+            { key: 'status', label: 'Күйі' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getInvoiceColumns() {
+        return [
+            { key: 'id', label: '№' }, { key: 'customer', label: 'Клиент' },
+            { key: 'amount', label: 'Сомасы' }, { key: 'status', label: 'Күйі' },
+            { key: 'created', label: 'Күні' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getSupplierColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Аты' },
+            { key: 'company', label: 'Компаниясы' }, { key: 'phone', label: 'Телефон' },
+            { key: 'email', label: 'Пошта' }, { key: 'status', label: 'Күйі' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getPurchaseColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'supplier', label: 'Жеткізуші' },
+            { key: 'total', label: 'Сомасы' }, { key: 'status', label: 'Күйі' },
+            { key: 'created', label: 'Күні' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getWarehouseColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Атауы' },
+            { key: 'location', label: 'Орналасқан жері' }, { key: 'capacity', label: 'Сыйымдылығы' },
+            { key: 'currentStock', label: 'Толтырылған' }, { key: 'manager', label: 'Менеджер' },
+            { key: 'status', label: 'Күйі' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getEmployeeColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'name', label: 'Аты-жөні' },
+            { key: 'position', label: 'Лауазымы' }, { key: 'department', label: 'Бөлім' },
+            { key: 'salary', label: 'Жалақысы' }, { key: 'status', label: 'Күйі' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getTicketColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'title', label: 'Тақырыбы' },
+            { key: 'customer', label: 'Клиент' }, { key: 'status', label: 'Күйі' },
+            { key: 'priority', label: 'Басымдылығы' }, { key: 'created', label: 'Күні' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getReviewColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'customer', label: 'Клиент' },
+            { key: 'product', label: 'Тауар' }, { key: 'rating', label: 'Бағасы' },
+            { key: 'status', label: 'Күйі' }, { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getCouponColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'code', label: 'Код' },
+            { key: 'discount', label: 'Жеңілдік' }, { key: 'type', label: 'Түрі' },
+            { key: 'status', label: 'Күйі' }, { key: 'expires', label: 'Қолданылу мерзімі' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+    function getBannerColumns() {
+        return [
+            { key: 'id', label: 'ID' }, { key: 'title', label: 'Атауы' },
+            { key: 'position', label: 'Орны' }, { key: 'status', label: 'Күйі' },
+            { key: 'actions', label: 'Әрекеттер' }
+        ];
+    }
+
+    // ================================================================
+    //  TABLE RENDERER
+    // ================================================================
+    function renderTable(area, table, title, columns) {
+        currentTable = table;
+        const data = db.get(table);
+        area.innerHTML = `
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas ${getTableIcon(table)}"></i> ${title}</h3>
+                    <div class="filters">
+                        <input type="text" id="tableSearch" placeholder="🔍 Іздеу..." oninput="filterTable('${table}')" />
+                        <select id="tableStatusFilter" onchange="filterTable('${table}')">
+                            <option value="">Барлық күйлер</option>
+                            <option value="active">Белсенді</option>
+                            <option value="pending">Күтуде</option>
+                            <option value="inactive">Белсенді емес</option>
+                            <option value="completed">Аяқталған</option>
+                            <option value="cancelled">Бас тартылған</option>
+                            <option value="open">Ашық</option>
+                            <option value="closed">Жабық</option>
+                        </select>
+                        <button onclick="openAddModal('${table}')" style="background:var(--primary-gradient);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-plus"></i> Қосу
+                        </button>
+                        <button onclick="exportTable('${table}')" style="background:var(--gray-100);padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container" id="tableContainer_${table}">
+                    ${renderTableData(table, data, columns)}
+                </div>
+            </div>
+        `;
+        window[`_tableData_${table}`] = { data, columns };
+    }
+
+    function getTableIcon(table) {
+        const icons = {
+            products: 'fa-box', categories: 'fa-tags', brands: 'fa-trademark',
+            customers: 'fa-users', orders: 'fa-shopping-cart', shipments: 'fa-truck',
+            payments: 'fa-credit-card', invoices: 'fa-file-invoice',
+            suppliers: 'fa-truck-loading', purchases: 'fa-shopping-bag',
+            warehouse: 'fa-warehouse', employees: 'fa-user-tie',
+            tickets: 'fa-headset', reviews: 'fa-star',
+            coupons: 'fa-ticket-alt', banners: 'fa-images'
+        };
+        return icons[table] || 'fa-table';
+    }
+
+    function renderTableData(table, data, columns) {
+        if (!data || data.length === 0) {
+            return `<div class="empty-state"><i class="fas fa-inbox"></i><h3>Деректер жоқ</h3><p>Қосу үшін "Қосу" түймесін басыңыз</p></div>`;
+        }
+        let html = `<table><thead><tr>`;
+        for (const col of columns) {
+            if (col.key === 'actions') {
+                html += `<th>Әрекеттер</th>`;
+            } else {
+                html += `<th>${col.label}</th>`;
+            }
+        }
+        html += `</tr></thead><tbody>`;
+        for (const item of data) {
+            html += `<tr>`;
+            for (const col of columns) {
+                if (col.key === 'actions') {
+                    html += `
+                        <td>
+                            <div class="row-actions">
+                                <button class="btn-view" onclick="viewItem('${table}', ${item.id})" title="Қарау"><i class="fas fa-eye"></i></button>
+                                <button class="btn-edit" onclick="openEditModal('${table}', ${item.id})" title="Өңдеу"><i class="fas fa-edit"></i></button>
+                                <button class="btn-copy" onclick="copyItem('${table}', ${item.id})" title="Көшіру"><i class="fas fa-copy"></i></button>
+                                <button class="btn-archive" onclick="archiveItem('${table}', ${item.id})" title="Мұрағаттау"><i class="fas fa-archive"></i></button>
+                                <button class="btn-restore" onclick="restoreItem('${table}', ${item.id})" title="Қалпына келтіру"><i class="fas fa-undo"></i></button>
+                                <button class="btn-print" onclick="printItem('${table}', ${item.id})" title="Басып шығару"><i class="fas fa-print"></i></button>
+                                <button class="btn-delete" onclick="deleteItem('${table}', ${item.id})" title="Жою"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    `;
+                } else {
+                    html += `<td>${formatCell(item, col)}</td>`;
+                }
+            }
+            html += `</tr>`;
+        }
+        html += `</tbody></table>`;
+        return html;
+    }
+
+    function formatCell(item, col) {
+        const val = item[col.key];
+        if (col.key === 'status') {
+            return `<span class="status-badge ${val}">${val || '—'}</span>`;
+        }
+        if (['price', 'total', 'amount', 'salary', 'totalSpent', 'discount'].includes(col.key)) {
+            return val ? `${Number(val).toLocaleString()} ₸` : '—';
+        }
+        if (['created', 'updated', 'lastLogin', 'deadline', 'expires', 'delivered', 'paid', 'startDate', 'endDate'].includes(col.key)) {
+            return val ? new Date(val).toLocaleDateString('kk-KZ') : '—';
+        }
+        if (col.key === 'items' && Array.isArray(val)) {
+            return val.slice(0, 2).map(i => i.name || i).join(', ') + (val.length > 2 ? '...' : '');
+        }
+        if (col.key === 'rating') {
+            return '⭐'.repeat(Math.round(val || 0));
+        }
+        if (val === undefined || val === null || val === '') return '—';
+        if (typeof val === 'string' && val.length > 30) return val.slice(0, 27) + '...';
+        if (typeof val === 'boolean') return val ? '✅' : '❌';
+        return val;
+    }
+
+    function filterTable(table) {
+        const search = document.getElementById('tableSearch').value.toLowerCase();
+        const statusFilter = document.getElementById('tableStatusFilter').value;
+        const allData = db.get(table);
+        let filtered = allData;
+        if (search) {
+            filtered = filtered.filter(item =>
+                Object.values(item).some(val => String(val).toLowerCase().includes(search))
+            );
+        }
+        if (statusFilter) {
+            filtered = filtered.filter(item => item.status === statusFilter);
+        }
+        const container = document.getElementById(`tableContainer_${table}`);
+        if (container) {
+            const columns = getColumnsForTable(table);
+            container.innerHTML = renderTableData(table, filtered, columns);
+        }
+    }
+
+    function getColumnsForTable(table) {
+        const maps = {
+            products: getProductColumns,
+            categories: getCategoryColumns,
+            brands: getBrandColumns,
+            customers: getCustomerColumns,
+            orders: getOrderColumns,
+            shipments: getShipmentColumns,
+            payments: getPaymentColumns,
+            invoices: getInvoiceColumns,
+            suppliers: getSupplierColumns,
+            purchases: getPurchaseColumns,
+            warehouse: getWarehouseColumns,
+            employees: getEmployeeColumns,
+            tickets: getTicketColumns,
+            reviews: getReviewColumns,
+            coupons: getCouponColumns,
+            banners: getBannerColumns
+        };
+        const fn = maps[table];
+        return fn ? fn() : [{ key: 'id', label: 'ID' }, { key: 'name', label: 'Атауы' }];
+    }
+
+    // ================================================================
+    //  MODAL OPERATIONS
+    // ================================================================
+    function openAddModal(table) {
+        editId = null;
+        currentTable = table;
+        const fields = getFormFields(table);
+        document.getElementById('modalTitle').innerHTML = `<i class="fas fa-plus-circle"></i> ${getModuleLabel(table)} қосу`;
+        document.getElementById('modalBody').innerHTML = fields;
+        document.getElementById('modalSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Сақтау';
+        document.getElementById('modalOverlay').classList.add('open');
+    }
+
+    function openEditModal(table, id) {
+        editId = id;
+        currentTable = table;
+        const item = db.find(table, id);
+        if (!item) { showToast('error', 'Жазба табылмады'); return; }
+        const fields = getFormFields(table, item);
+        document.getElementById('modalTitle').innerHTML = `<i class="fas fa-edit"></i> ${getModuleLabel(table)} өңдеу`;
+        document.getElementById('modalBody').innerHTML = fields;
+        document.getElementById('modalSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Жаңарту';
+        document.getElementById('modalOverlay').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+        editId = null;
+    }
+
+    function getFormFields(table, data = null) {
+        const baseFields = `
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Атауы <span class="required">*</span></label>
+                    <input type="text" id="f_name" value="${data?.name || ''}" required />
+                </div>
+                <div class="form-group">
+                    <label>Күйі</label>
+                    <select id="f_status">
+                        ${['active','pending','inactive','completed','cancelled'].map(s => 
+                            `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label>Сипаттамасы</label>
+                    <textarea id="f_desc" rows="3">${data?.desc || data?.description || ''}</textarea>
+                </div>
+            </div>
+        `;
+
+        const specificFields = {
+            products: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Атауы <span class="required">*</span></label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" required /></div>
+                    <div class="form-group"><label>Бағасы (₸)</label>
+                        <input type="number" id="f_price" value="${data?.price || 0}" /></div>
+                    <div class="form-group"><label>Саны</label>
+                        <input type="number" id="f_qty" value="${data?.qty || 0}" /></div>
+                    <div class="form-group"><label>Штрих-код</label>
+                        <input type="text" id="f_barcode" value="${data?.barcode || '4' + Math.floor(100000000000 + Math.random() * 900000000000)}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Санаты</label>
+                        <input type="text" id="f_category" value="${data?.category || ''}" /></div>
+                    <div class="form-group"><label>Бренді</label>
+                        <input type="text" id="f_brand" value="${data?.brand || ''}" /></div>
+                    <div class="form-group"><label>SKU</label>
+                        <input type="text" id="f_sku" value="${data?.sku || ''}" /></div>
+                    <div class="form-group full-width"><label>Сипаттамасы</label>
+                        <textarea id="f_desc" rows="3">${data?.desc || ''}</textarea></div>
+                </div>
+            `,
+            categories: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Атауы <span class="required">*</span></label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" required /></div>
+                    <div class="form-group"><label>Ата-анасы</label>
+                        <input type="text" id="f_parent" value="${data?.parent || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group full-width"><label>Сипаттамасы</label>
+                        <textarea id="f_description" rows="3">${data?.description || ''}</textarea></div>
+                </div>
+            `,
+            brands: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Атауы <span class="required">*</span></label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" required /></div>
+                    <div class="form-group"><label>Сайты</label>
+                        <input type="text" id="f_website" value="${data?.website || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            customers: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Аты-жөні <span class="required">*</span></label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" required /></div>
+                    <div class="form-group"><label>Пошта</label>
+                        <input type="email" id="f_email" value="${data?.email || ''}" /></div>
+                    <div class="form-group"><label>Телефон</label>
+                        <input type="text" id="f_phone" value="${data?.phone || ''}" /></div>
+                    <div class="form-group full-width"><label>Мекенжайы</label>
+                        <input type="text" id="f_address" value="${data?.address || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            orders: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Клиент <span class="required">*</span></label>
+                        <input type="text" id="f_customer" value="${data?.customer || ''}" required /></div>
+                    <div class="form-group full-width"><label>Тауарлар</label>
+                        <input type="text" id="f_items" value="${data?.items?.map(i => i.name || i).join(', ') || ''}" placeholder="Тауар1, Тауар2" /></div>
+                    <div class="form-group"><label>Сомасы</label>
+                        <input type="number" id="f_total" value="${data?.total || 0}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['pending','active','completed','cancelled'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Төлем</label>
+                        <select id="f_payment">${['cash','card','transfer'].map(s => `<option value="${s}" ${data?.payment === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Жеткізу</label>
+                        <select id="f_delivery">${['pickup','courier','mail'].map(s => `<option value="${s}" ${data?.delivery === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group full-width"><label>Мекенжайы</label>
+                        <input type="text" id="f_address" value="${data?.address || ''}" /></div>
+                </div>
+            `,
+            shipments: `
+                <div class="form-grid">
+                    <div class="form-group"><label>Тапсырыс ID</label>
+                        <input type="number" id="f_orderId" value="${data?.orderId || ''}" /></div>
+                    <div class="form-group"><label>Тасымалдаушы</label>
+                        <input type="text" id="f_carrier" value="${data?.carrier || ''}" /></div>
+                    <div class="form-group full-width"><label>Трекинг</label>
+                        <input type="text" id="f_tracking" value="${data?.tracking || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['pending','delivered','cancelled'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group full-width"><label>Мекенжайы</label>
+                        <input type="text" id="f_address" value="${data?.address || ''}" /></div>
+                </div>
+            `,
+            payments: `
+                <div class="form-grid">
+                    <div class="form-group"><label>Тапсырыс ID</label>
+                        <input type="number" id="f_orderId" value="${data?.orderId || ''}" /></div>
+                    <div class="form-group"><label>Сомасы</label>
+                        <input type="number" id="f_amount" value="${data?.amount || 0}" /></div>
+                    <div class="form-group"><label>Тәсілі</label>
+                        <select id="f_method">${['cash','card','transfer'].map(s => `<option value="${s}" ${data?.method === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['pending','completed','failed'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            invoices: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Клиент</label>
+                        <input type="text" id="f_customer" value="${data?.customer || ''}" /></div>
+                    <div class="form-group"><label>Сомасы</label>
+                        <input type="number" id="f_amount" value="${data?.amount || 0}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['pending','paid','cancelled'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            suppliers: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Аты</label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" /></div>
+                    <div class="form-group full-width"><label>Компаниясы</label>
+                        <input type="text" id="f_company" value="${data?.company || ''}" /></div>
+                    <div class="form-group"><label>Телефон</label>
+                        <input type="text" id="f_phone" value="${data?.phone || ''}" /></div>
+                    <div class="form-group"><label>Пошта</label>
+                        <input type="email" id="f_email" value="${data?.email || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            warehouse: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Атауы</label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" /></div>
+                    <div class="form-group full-width"><label>Орналасқан жері</label>
+                        <input type="text" id="f_location" value="${data?.location || ''}" /></div>
+                    <div class="form-group"><label>Сыйымдылығы</label>
+                        <input type="number" id="f_capacity" value="${data?.capacity || 0}" /></div>
+                    <div class="form-group"><label>Толтырылған</label>
+                        <input type="number" id="f_currentStock" value="${data?.currentStock || 0}" /></div>
+                    <div class="form-group"><label>Менеджер</label>
+                        <input type="text" id="f_manager" value="${data?.manager || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            employees: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Аты-жөні <span class="required">*</span></label>
+                        <input type="text" id="f_name" value="${data?.name || ''}" required /></div>
+                    <div class="form-group"><label>Лауазымы</label>
+                        <input type="text" id="f_position" value="${data?.position || ''}" /></div>
+                    <div class="form-group"><label>Бөлім</label>
+                        <input type="text" id="f_department" value="${data?.department || ''}" /></div>
+                    <div class="form-group"><label>Телефон</label>
+                        <input type="text" id="f_phone" value="${data?.phone || ''}" /></div>
+                    <div class="form-group"><label>Пошта</label>
+                        <input type="email" id="f_email" value="${data?.email || ''}" /></div>
+                    <div class="form-group"><label>Жалақысы</label>
+                        <input type="number" id="f_salary" value="${data?.salary || 0}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            tickets: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Тақырыбы <span class="required">*</span></label>
+                        <input type="text" id="f_title" value="${data?.title || ''}" required /></div>
+                    <div class="form-group full-width"><label>Сипаттамасы</label>
+                        <textarea id="f_description" rows="3">${data?.description || ''}</textarea></div>
+                    <div class="form-group"><label>Клиент</label>
+                        <input type="text" id="f_customer" value="${data?.customer || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['open','closed'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Басымдылығы</label>
+                        <select id="f_priority">${['high','medium','low'].map(s => `<option value="${s}" ${data?.priority === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            reviews: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Клиент</label>
+                        <input type="text" id="f_customer" value="${data?.customer || ''}" /></div>
+                    <div class="form-group full-width"><label>Тауар</label>
+                        <input type="text" id="f_product" value="${data?.product || ''}" /></div>
+                    <div class="form-group"><label>Бағасы</label>
+                        <select id="f_rating">${[1,2,3,4,5].map(r => `<option value="${r}" ${data?.rating === r ? 'selected' : ''}>${r} ⭐</option>`).join('')}</select></div>
+                    <div class="form-group full-width"><label>Пікір</label>
+                        <textarea id="f_comment" rows="3">${data?.comment || ''}</textarea></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['published','pending','hidden'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            coupons: `
+                <div class="form-grid">
+                    <div class="form-group"><label>Код</label>
+                        <input type="text" id="f_code" value="${data?.code || ''}" /></div>
+                    <div class="form-group"><label>Жеңілдік</label>
+                        <input type="number" id="f_discount" value="${data?.discount || 0}" /></div>
+                    <div class="form-group"><label>Түрі</label>
+                        <select id="f_type">${['percent','fixed'].map(s => `<option value="${s}" ${data?.type === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Қолданылу мерзімі</label>
+                        <input type="date" id="f_expires" value="${data?.expires || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','inactive','expired'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                </div>
+            `,
+            banners: `
+                <div class="form-grid">
+                    <div class="form-group full-width"><label>Атауы</label>
+                        <input type="text" id="f_title" value="${data?.title || ''}" /></div>
+                    <div class="form-group"><label>Орны</label>
+                        <input type="text" id="f_position" value="${data?.position || ''}" /></div>
+                    <div class="form-group"><label>Күйі</label>
+                        <select id="f_status">${['active','pending','inactive'].map(s => `<option value="${s}" ${data?.status === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+                    <div class="form-group full-width"><label>Сілтеме</label>
+                        <input type="text" id="f_link" value="${data?.link || ''}" /></div>
+                </div>
+            `
+        };
+
+        return specificFields[table] || baseFields;
+    }
+
+    function submitModalForm(e) {
+        e.preventDefault();
+        const table = currentTable;
+        const data = collectFormData(table);
+
+        if (editId) {
+            const updated = db.update(table, editId, data);
+            if (updated) {
+                showToast('success', `#${editId} жазбасы жаңартылды`);
+                db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Жаңарту', details: `${table} #${editId}` });
+            }
+        } else {
+            const created = db.insert(table, data);
+            if (created) {
+                showToast('success', `#${created.id} жазбасы қосылды`);
+                db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Қосу', details: `${table} #${created.id}` });
+            }
+        }
+        closeModal();
+        renderContent(currentModule);
+    }
+
+    function collectFormData(table) {
+        const data = {};
+        const fields = ['name', 'price', 'qty', 'barcode', 'status', 'category', 'brand', 'sku', 'desc',
+            'email', 'phone', 'address', 'customer', 'items', 'total', 'payment', 'delivery',
+            'company', 'position', 'department', 'salary', 'title', 'description', 'priority',
+            'deadline', 'rating', 'comment', 'code', 'discount', 'type', 'expires', 'image',
+            'link', 'position', 'carrier', 'tracking', 'method', 'amount', 'supplier',
+            'orderId', 'parent', 'website', 'location', 'capacity', 'currentStock', 'manager'
+        ];
+        for (const f of fields) {
+            const el = document.getElementById(`f_${f}`);
+            if (el) {
+                if (f === 'items') {
+                    data[f] = el.value.split(',').map(s => s.trim()).filter(Boolean).map(n => ({ name: n, qty: 1, price: 0 }));
+                } else if (['price', 'total', 'amount', 'salary', 'discount', 'capacity', 'currentStock'].includes(f)) {
+                    data[f] = parseFloat(el.value) || 0;
+                } else if (['qty', 'orderId'].includes(f)) {
+                    data[f] = parseInt(el.value) || 0;
+                } else if (['rating'].includes(f)) {
+                    data[f] = parseInt(el.value) || 5;
+                } else {
+                    data[f] = el.value;
+                }
+            }
+        }
+        return data;
+    }
+
+    // ================================================================
+    //  ITEM ACTIONS
+    // ================================================================
+    function deleteItem(table, id) {
+        if (!confirm(`#${id} жазбасын жою?`)) return;
+        const deleted = db.delete(table, id);
+        if (deleted) {
+            showToast('success', `#${id} жазбасы жойылды`);
+            db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Жою', details: `${table} #${id}` });
+        }
+        renderContent(currentModule);
+    }
+
+    function copyItem(table, id) {
+        const item = db.find(table, id);
+        if (!item) { showToast('error', 'Жазба табылмады'); return; }
+        const { id: _, ...clone } = item;
+        clone.name = clone.name + ' (көшірме)';
+        const created = db.insert(table, clone);
+        if (created) {
+            showToast('success', `#${created.id} көшірмесі жасалды`);
+            db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Көшіру', details: `${table} #${id} → #${created.id}` });
+        }
+        renderContent(currentModule);
+    }
+
+    function archiveItem(table, id) {
+        const item = db.find(table, id);
+        if (!item) { showToast('error', 'Жазба табылмады'); return; }
+        if (item.status === 'inactive') { showToast('warning', 'Қазірдің өзінде мұрағатталған'); return; }
+        db.update(table, id, { status: 'inactive' });
+        showToast('success', `#${id} жазбасы мұрағатталды`);
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Мұрағаттау', details: `${table} #${id}` });
+        renderContent(currentModule);
+    }
+
+    function restoreItem(table, id) {
+        const item = db.find(table, id);
+        if (!item) { showToast('error', 'Жазба табылмады'); return; }
+        if (item.status !== 'inactive') { showToast('warning', 'Мұрағатта емес'); return; }
+        db.update(table, id, { status: 'active' });
+        showToast('success', `#${id} жазбасы қалпына келтірілді`);
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Қалпына келтіру', details: `${table} #${id}` });
+        renderContent(currentModule);
+    }
+
+    function viewItem(table, id) {
+        const item = db.find(table, id);
+        if (!item) { showToast('error', 'Жазба табылмады'); return; }
+        const details = Object.entries(item)
+            .map(([k, v]) => `${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`)
+            .join('\n');
+        alert(`📄 #${id} жазбасының мәліметтері\n\n${details}`);
+    }
+
+    function printItem(table, id) {
+        const item = db.find(table, id);
+        if (!item) { showToast('error', 'Жазба табылмады'); return; }
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html><head><title>Документ #${id}</title>
+            <style>body{font-family:Arial;padding:40px;}h1{color:#2563eb;}table{width:100%;border-collapse:collapse;margin-top:20px;}td,th{padding:10px;border:1px solid #ddd;text-align:left;}</style>
+            </head><body>
+            <h1>Документ #${id}</h1>
+            <table>${Object.entries(item).map(([k,v]) => `<tr><th>${k}</th><td>${typeof v === 'object' ? JSON.stringify(v) : v}</td></tr>`).join('')}</table>
+            <p style="margin-top:30px;color:#666;">Жасалған: ${new Date().toLocaleString()}</p>
+            </body></html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function exportTable(table) {
+        const data = db.get(table);
+        const json = JSON.stringify(data, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${table}_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('success', `${table} экспортталды`);
+    }
+
+    function exportAllData() {
+        const json = JSON.stringify(db.data, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `crm_full_backup_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('success', 'Толық сақтық көшірме экспортталды');
+    }
+
+    function importData() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    db.data = data;
+                    db.save();
+                    showToast('success', 'Деректер сәтті импортталды');
+                    renderContent(currentModule);
+                } catch (err) {
+                    showToast('error', 'Импорт қатесі: жарамсыз пішім');
+                }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    }
+
+    // ================================================================
+    //  DASHBOARD
+    // ================================================================
+    function renderDashboard(area) {
+        const products = db.get('products');
+        const orders = db.get('orders');
+        const customers = db.get('customers');
+        const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+        const pendingOrders = orders.filter(o => o.status === 'pending').length;
+        const activeProducts = products.filter(p => p.status === 'active').length;
+        const todayOrders = orders.filter(o => new Date(o.created).toDateString() === new Date().toDateString()).length;
+
+        area.innerHTML = `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">📦 Тауарлар</div><div class="stat-value">${products.length}</div><div class="stat-change positive">+12%</div></div>
+                <div class="stat-card"><div class="stat-label">🛒 Тапсырыстар</div><div class="stat-value">${orders.length}</div><div class="stat-change positive">+8%</div></div>
+                <div class="stat-card"><div class="stat-label">⏳ Өңделуде</div><div class="stat-value">${pendingOrders}</div><div class="stat-change warning">+${pendingOrders}</div></div>
+                <div class="stat-card"><div class="stat-label">👥 Клиенттер</div><div class="stat-value">${customers.length}</div><div class="stat-change positive">+15%</div></div>
+                <div class="stat-card"><div class="stat-label">💰 Табыс</div><div class="stat-value">${revenue.toLocaleString()} ₸</div><div class="stat-change positive">+23%</div></div>
+                <div class="stat-card"><div class="stat-label">📅 Бүгінгі тапсырыстар</div><div class="stat-value">${todayOrders}</div><div class="stat-change positive">+${todayOrders}</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+                <div class="table-wrapper">
+                    <div class="table-header"><h3>📋 Соңғы тапсырыстар</h3></div>
+                    <div class="table-container">
+                        <table><thead><tr><th>№</th><th>Клиент</th><th>Сомасы</th><th>Күйі</th><th>Күні</th></tr></thead>
+                        <tbody>${orders.slice(0, 5).map(o => `
+                            <tr><td>#${o.id}</td><td>${o.customer}</td><td>${(o.total || 0).toLocaleString()} ₸</td>
+                            <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                            <td>${new Date(o.created).toLocaleDateString()}</td></tr>
+                        `).join('')}</tbody></table>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-header"><h3>⚡ Белсенділік</h3></div>
+                    <div style="padding:16px;">
+                        <p style="padding:6px 0;border-bottom:1px solid var(--gray-100);"><i class="fas fa-check-circle" style="color:var(--success);"></i> Жаңа тапсырыс #${orders.length > 0 ? orders[orders.length-1].id : 0}</p>
+                        <p style="padding:6px 0;border-bottom:1px solid var(--gray-100);"><i class="fas fa-user-plus" style="color:var(--primary);"></i> Жаңа клиент</p>
+                        <p style="padding:6px 0;border-bottom:1px solid var(--gray-100);"><i class="fas fa-box" style="color:var(--warning);"></i> Тауар жаңартылды</p>
+                        <p style="padding:6px 0;border-bottom:1px solid var(--gray-100);"><i class="fas fa-file-invoice" style="color:var(--info);"></i> Шот төленді</p>
+                        <p style="padding:6px 0;"><i class="fas fa-truck" style="color:var(--success);"></i> Тапсырыс жеткізілді</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ================================================================
+    //  INVENTORY
+    // ================================================================
+    function renderInventory(area) {
+        const products = db.get('products');
+        area.innerHTML = `
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas fa-clipboard-list"></i> Түгендеу</h3>
+                    <div class="filters">
+                        <button onclick="startInventory()" style="background:var(--success);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-play"></i> Тексеруді бастау
+                        </button>
+                        <button onclick="saveInventory()" style="background:var(--primary-gradient);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-save"></i> Өзгерістерді сақтау
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>ID</th><th>Тауар</th><th>Ағымдағы қалдық</th><th>Жаңа қалдық</th><th>Күйі</th></tr></thead>
+                    <tbody>${products.map(p => `
+                        <tr>
+                            <td>${p.id}</td>
+                            <td>${p.name}</td>
+                            <td>${p.qty}</td>
+                            <td><input type="number" value="${p.qty}" style="width:100px;padding:6px 10px;border:2px solid var(--gray-200);border-radius:6px;" id="inv_qty_${p.id}" /></td>
+                            <td><span class="status-badge ${p.qty > 5 ? 'active' : 'pending'}">${p.qty > 5 ? 'Қалыпты' : 'Сыни'}</span></td>
+                        </tr>
+                    `).join('')}</tbody></table>
+                </div>
+            </div>
+        `;
+    }
+
+    function startInventory() {
+        showToast('info', 'Түгендеу басталды! Барлық тауарлардың қалдығын тексеріңіз');
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Түгендеу', details: 'Тексеру басталды' });
+    }
+
+    function saveInventory() {
+        const products = db.get('products');
+        for (const p of products) {
+            const el = document.getElementById(`inv_qty_${p.id}`);
+            if (el) {
+                const newQty = parseInt(el.value);
+                if (newQty !== p.qty) {
+                    db.update('products', p.id, { qty: newQty });
+                }
+            }
+        }
+        showToast('success', 'Түгендеу сақталды! Қалдықтар жаңартылды');
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Түгендеу', details: 'Сақталды' });
+        renderContent(currentModule);
+    }
+
+    // ================================================================
+    //  FINANCE
+    // ================================================================
+    function renderFinance(area) {
+        const orders = db.get('orders');
+        const totalRevenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+        const totalExpenses = Math.round(totalRevenue * 0.35);
+        const profit = totalRevenue - totalExpenses;
+        const completedOrders = orders.filter(o => o.status === 'completed').length;
+
+        area.innerHTML = `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">💰 Кірістер</div><div class="stat-value">${totalRevenue.toLocaleString()} ₸</div><div class="stat-change positive">+23%</div></div>
+                <div class="stat-card"><div class="stat-label">📊 Шығындар</div><div class="stat-value">${totalExpenses.toLocaleString()} ₸</div><div class="stat-change negative">-12%</div></div>
+                <div class="stat-card"><div class="stat-label">📈 Пайда</div><div class="stat-value">${profit.toLocaleString()} ₸</div><div class="stat-change positive">+35%</div></div>
+                <div class="stat-card"><div class="stat-label">💳 Транзакциялар</div><div class="stat-value">${orders.length}</div><div class="stat-change positive">+8%</div></div>
+                <div class="stat-card"><div class="stat-label">✅ Аяқталған тапсырыстар</div><div class="stat-value">${completedOrders}</div><div class="stat-change positive">+${completedOrders}</div></div>
+                <div class="stat-card"><div class="stat-label">📈 Маржиналдылық</div><div class="stat-value">${orders.length ? Math.round((profit / totalRevenue) * 100) : 0}%</div><div class="stat-change positive">+5%</div></div>
+            </div>
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas fa-coins"></i> Қаржылық операциялар</h3>
+                    <div class="filters">
+                        <button onclick="addFinanceOperation()" style="background:var(--primary-gradient);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-plus"></i> Операция қосу
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>Тапсырыс</th><th>Клиент</th><th>Сомасы</th><th>Күйі</th><th>Күні</th><th>Әрекеттер</th></tr></thead>
+                    <tbody>${orders.slice(0, 10).map(o => `
+                        <tr>
+                            <td>#${o.id}</td>
+                            <td>${o.customer}</td>
+                            <td>${(o.total || 0).toLocaleString()} ₸</td>
+                            <td><span class="status-badge ${o.status}">${o.status}</span></td>
+                            <td>${new Date(o.created).toLocaleDateString()}</td>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="btn-view" onclick="viewItem('orders', ${o.id})"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-print" onclick="printItem('orders', ${o.id})"><i class="fas fa-print"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}</tbody></table>
+                </div>
+            </div>
+        `;
+    }
+
+    function addFinanceOperation() {
+        showToast('info', 'Қаржылық операция қосу формасы ашылды');
+    }
+
+    // ================================================================
+    //  ANALYTICS
+    // ================================================================
+    function renderAnalytics(area) {
+        const products = db.get('products');
+        const orders = db.get('orders');
+        const customers = db.get('customers');
+        const avgOrder = orders.length ? Math.round(orders.reduce((s, o) => s + (o.total || 0), 0) / orders.length) : 0;
+        const topProduct = products.length ? products.sort((a, b) => b.qty - a.qty)[0] : null;
+        const conversion = customers.length ? Math.round((orders.length / customers.length) * 100) : 0;
+
+        area.innerHTML = `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">📈 Конверсия</div><div class="stat-value">${conversion}%</div><div class="stat-change positive">+3.2%</div></div>
+                <div class="stat-card"><div class="stat-label">💰 Орташа чек</div><div class="stat-value">${avgOrder.toLocaleString()} ₸</div><div class="stat-change positive">+5%</div></div>
+                <div class="stat-card"><div class="stat-label">⭐ Үздік тауар</div><div class="stat-value">${topProduct ? topProduct.name : 'Деректер жоқ'}</div><div class="stat-change positive">${topProduct ? topProduct.qty : 0} дана</div></div>
+                <div class="stat-card"><div class="stat-label">🔄 Қайталанатын сатып алулар</div><div class="stat-value">${customers.filter(c => c.totalOrders > 1).length}</div><div class="stat-change positive">+15%</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div class="table-wrapper">
+                    <div class="table-header"><h3>📊 ABC-талдау</h3></div>
+                    <div style="padding:20px;">
+                        <p style="padding:8px 0;"><span style="display:inline-block;width:20px;height:20px;background:#16a34a;border-radius:4px;vertical-align:middle;"></span> <strong>A (70%)</strong>: ${Math.ceil(products.length * 0.2)} тауар</p>
+                        <p style="padding:8px 0;"><span style="display:inline-block;width:20px;height:20px;background:#d97706;border-radius:4px;vertical-align:middle;"></span> <strong>B (20%)</strong>: ${Math.ceil(products.length * 0.3)} тауар</p>
+                        <p style="padding:8px 0;"><span style="display:inline-block;width:20px;height:20px;background:#dc2626;border-radius:4px;vertical-align:middle;"></span> <strong>C (10%)</strong>: ${Math.ceil(products.length * 0.5)} тауар</p>
+                        <p style="padding:8px 0;border-top:1px solid var(--gray-200);margin-top:12px;color:var(--gray-500);">Ұсыныс: A тобындағы тауарларға назар аударыңыз</p>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <div class="table-header"><h3>📈 Тапсырыстар күйі</h3></div>
+                    <div style="padding:20px;">
+                        ${['pending','active','completed','cancelled'].map(s => {
+                            const count = orders.filter(o => o.status === s).length;
+                            const total = orders.length || 1;
+                            const percent = Math.round((count / total) * 100);
+                            return `<p style="padding:6px 0;display:flex;justify-content:space-between;">
+                                <span>${s}: <strong>${count}</strong></span>
+                                <span style="color:var(--gray-500);">${percent}%</span>
+                            </p>`;
+                        }).join('')}
+                        <div style="border-top:1px solid var(--gray-200);margin-top:12px;padding-top:12px;color:var(--gray-500);">
+                            Барлығы: <strong>${orders.length}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ================================================================
+    //  REPORTS
+    // ================================================================
+    function renderReports(area) {
+        area.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+                <div class="stat-card" onclick="generateReport('sales')" style="cursor:pointer;text-align:center;">
+                    <div class="stat-label">📊 Сату бойынша есеп</div>
+                    <div style="font-size:48px;margin:12px 0;">📈</div>
+                    <button style="width:100%;padding:10px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">Құру</button>
+                </div>
+                <div class="stat-card" onclick="generateReport('customers')" style="cursor:pointer;text-align:center;">
+                    <div class="stat-label">👥 Клиенттер бойынша есеп</div>
+                    <div style="font-size:48px;margin:12px 0;">👥</div>
+                    <button style="width:100%;padding:10px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">Құру</button>
+                </div>
+                <div class="stat-card" onclick="generateReport('finance')" style="cursor:pointer;text-align:center;">
+                    <div class="stat-label">💰 Қаржылық есеп</div>
+                    <div style="font-size:48px;margin:12px 0;">💰</div>
+                    <button style="width:100%;padding:10px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">Құру</button>
+                </div>
+                <div class="stat-card" onclick="generateReport('warehouse')" style="cursor:pointer;text-align:center;">
+                    <div class="stat-label">🏬 Қоймалық есеп</div>
+                    <div style="font-size:48px;margin:12px 0;">🏬</div>
+                    <button style="width:100%;padding:10px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">Құру</button>
+                </div>
+                <div class="stat-card" onclick="generateReport('employees')" style="cursor:pointer;text-align:center;">
+                    <div class="stat-label">👨‍💼 Қызметкерлер есебі</div>
+                    <div style="font-size:48px;margin:12px 0;">👨‍💼</div>
+                    <button style="width:100%;padding:10px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">Құру</button>
+                </div>
+                <div class="stat-card" onclick="generateReport('full')" style="cursor:pointer;text-align:center;">
+                    <div class="stat-label">📋 Толық есеп</div>
+                    <div style="font-size:48px;margin:12px 0;">📋</div>
+                    <button style="width:100%;padding:10px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">Құру</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function generateReport(type) {
+        const reports = {
+            sales: 'Сату бойынша есеп құрылды! Барлығы: ' + db.count('orders') + ' тапсырыс',
+            customers: 'Клиенттер бойынша есеп құрылды! Барлығы: ' + db.count('customers') + ' клиент',
+            finance: 'Қаржылық есеп құрылды! Кіріс: ' + db.get('orders').reduce((s, o) => s + (o.total || 0), 0).toLocaleString() + ' ₸',
+            warehouse: 'Қоймалық есеп құрылды! Тауарлар: ' + db.count('products'),
+            employees: 'Қызметкерлер есебі құрылды! Қызметкерлер: ' + db.count('employees'),
+            full: 'Толық есеп құрылды! Барлығы: ' + db.tables.reduce((s, t) => s + db.count(t), 0) + ' жазба'
+        };
+        showToast('success', reports[type] || 'Есеп құрылды');
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Есеп', details: `Құрылды: ${type}` });
+    }
+
+    // ================================================================
+    //  ROLES
+    // ================================================================
+    function renderRoles(area) {
+        const roles = db.get('roles');
+        area.innerHTML = `
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas fa-shield-alt"></i> Рөлдер мен құқықтар</h3>
+                    <div class="filters">
+                        <button onclick="showToast('info', 'Рөл қосу формасы')" style="background:var(--primary-gradient);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-plus"></i> Рөл қосу
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>ID</th><th>Атауы</th><th>Сипаттамасы</th><th>Құқықтар</th><th>Әрекеттер</th></tr></thead>
+                    <tbody>${roles.map(r => `
+                        <tr>
+                            <td>${r.id}</td>
+                            <td><strong>${r.name}</strong></td>
+                            <td>${r.description || '—'}</td>
+                            <td>${Array.isArray(r.permissions) ? r.permissions.length + ' құқық' : '—'}</td>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="btn-edit" onclick="showToast('info', 'Рөлді өңдеу')"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-copy" onclick="showToast('info', 'Рөлді көшіру')"><i class="fas fa-copy"></i></button>
+                                    <button class="btn-delete" onclick="showToast('warning', 'Рөлді жою')"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}</tbody></table>
+                </div>
+            </div>
+        `;
+    }
+
+    // ================================================================
+    //  TASKS
+    // ================================================================
+    function renderTasks(area) {
+        const tasks = db.get('tasks');
+        const pendingTasks = tasks.filter(t => t.status === 'pending').length;
+        const completedTasks = tasks.filter(t => t.status === 'completed').length;
+
+        area.innerHTML = `
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-label">📋 Барлығы</div><div class="stat-value">${tasks.length}</div></div>
+                <div class="stat-card"><div class="stat-label">⏳ Орындалуда</div><div class="stat-value">${pendingTasks}</div><div class="stat-change warning">+${pendingTasks}</div></div>
+                <div class="stat-card"><div class="stat-label">✅ Орындалды</div><div class="stat-value">${completedTasks}</div><div class="stat-change positive">+${completedTasks}</div></div>
+            </div>
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas fa-tasks"></i> Тапсырмалар</h3>
+                    <div class="filters">
+                        <button onclick="addNewTask()" style="background:var(--primary-gradient);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-plus"></i> Жаңа тапсырма
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>ID</th><th>Тапсырма</th><th>Орындаушы</th><th>Басымдылығы</th><th>Күйі</th><th>Әрекеттер</th></tr></thead>
+                    <tbody>${tasks.length ? tasks.map(t => `
+                        <tr>
+                            <td>${t.id}</td>
+                            <td><strong>${t.title}</strong></td>
+                            <td>${t.assigned || '—'}</td>
+                            <td><span class="status-badge ${t.priority}">${t.priority}</span></td>
+                            <td><span class="status-badge ${t.status}">${t.status}</span></td>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="btn-edit" onclick="showToast('info', 'Тапсырманы өңдеу')"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-success" onclick="completeTask(${t.id})"><i class="fas fa-check"></i></button>
+                                    <button class="btn-delete" onclick="deleteTaskItem(${t.id})"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="6" style="text-align:center;padding:30px;">Тапсырмалар жоқ</td></tr>'}</tbody></table>
+                </div>
+            </div>
+        `;
+    }
+
+    function addNewTask() {
+        const title = prompt('Тапсырма атауын енгізіңіз:');
+        if (title) {
+            const task = db.insert('tasks', { 
+                title, description: '', assigned: 'Тағайындалмаған', 
+                status: 'pending', priority: 'medium', deadline: new Date(Date.now() + 7*24*60*60*1000).toISOString().slice(0,10)
+            });
+            if (task) {
+                showToast('success', `#${task.id} тапсырмасы қосылды`);
+                db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Тапсырма қосу', details: task.title });
+            }
+            renderContent(currentModule);
+        }
+    }
+
+    function completeTask(id) {
+        db.update('tasks', id, { status: 'completed', completed: new Date().toISOString() });
+        showToast('success', `#${id} тапсырмасы орындалды`);
+        renderContent(currentModule);
+    }
+
+    function deleteTaskItem(id) {
+        if (!confirm(`#${id} тапсырмасын жою?`)) return;
+        db.delete('tasks', id);
+        showToast('success', `#${id} тапсырмасы жойылды`);
+        renderContent(currentModule);
+    }
+
+    // ================================================================
+    //  CHAT
+    // ================================================================
+    function renderChat(area) {
+        const chats = ['Иван Петров', 'Мария Смирнова', 'Қолдау', 'Алексей Нурланов', 'Айгүл Сағынтаева'];
+        area.innerHTML = `
+            <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;height:600px;">
+                <div class="table-wrapper" style="overflow-y:auto;">
+                    <div style="padding:16px;border-bottom:1px solid var(--gray-200);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+                        <i class="fas fa-comments"></i> Чаттар
+                        <button onclick="createNewChat()" style="background:var(--primary-gradient);color:#fff;padding:4px 12px;border-radius:6px;font-size:12px;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    ${chats.map((name, i) => `
+                        <div style="padding:12px 16px;cursor:pointer;border-bottom:1px solid var(--gray-100);${i === 0 ? 'background:var(--primary-light);' : ''}" onclick="openChat('${name}')">
+                            <strong>${name}</strong>
+                            <div style="font-size:13px;color:var(--gray-500);${i === 0 ? 'color:var(--primary);' : ''}">
+                                ${i === 0 ? 'Соңғы хабарлама...' : i === 1 ? 'Сәлеметсіз бе!' : i === 2 ? '3 жаңа хабарлама' : i === 3 ? 'Қайырлы күн!' : 'Тамаша!'}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="table-wrapper" style="display:flex;flex-direction:column;">
+                    <div style="padding:16px;border-bottom:1px solid var(--gray-200);font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+                        <span><i class="fas fa-user-circle"></i> Иван Петров</span>
+                        <div>
+                            <button onclick="pinChat()" style="background:transparent;padding:4px 8px;"><i class="fas fa-thumbtack"></i></button>
+                            <button onclick="deleteChat()" style="background:transparent;padding:4px 8px;color:var(--danger);"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div style="flex:1;padding:16px;overflow-y:auto;background:var(--gray-50);">
+                        <div style="margin-bottom:12px;">
+                            <div style="background:#fff;padding:10px 16px;border-radius:12px;display:inline-block;max-width:70%;box-shadow:var(--shadow-sm);">
+                                Сәлеметсіз бе! #101 тапсырыс бойынша анықтағым келеді
+                            </div>
+                            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">12:30</div>
+                        </div>
+                        <div style="margin-bottom:12px;text-align:right;">
+                            <div style="background:var(--primary-gradient);color:#fff;padding:10px 16px;border-radius:12px;display:inline-block;max-width:70%;">
+                                Қайырлы күн! #101 тапсырыс дайын
+                            </div>
+                            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">12:35</div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <div style="background:#fff;padding:10px 16px;border-radius:12px;display:inline-block;max-width:70%;box-shadow:var(--shadow-sm);">
+                                Тамаша! Ақпарат үшін рахмет!
+                            </div>
+                            <div style="font-size:12px;color:var(--gray-500);margin-top:4px;">12:38</div>
+                        </div>
+                    </div>
+                    <div style="padding:12px;border-top:1px solid var(--gray-200);display:flex;gap:12px;background:#fff;">
+                        <input type="text" id="chatInput" placeholder="Хабарлама жазыңыз..." style="flex:1;padding:10px 16px;border:2px solid var(--gray-200);border-radius:8px;" onkeypress="if(event.key==='Enter') sendMessage()" />
+                        <button onclick="sendMessage()" style="background:var(--primary-gradient);color:#fff;padding:10px 20px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <button onclick="showToast('info', 'Тіркемелер')" style="background:var(--gray-100);padding:10px 16px;border-radius:8px;">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function createNewChat() {
+        const name = prompt('Байланыс атын енгізіңіз:');
+        if (name) {
+            showToast('success', `${name} чаты құрылды`);
+            db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Чат құру', details: name });
+        }
+    }
+
+    function openChat(name) {
+        showToast('info', `${name} чаты ашылды`);
+    }
+
+    function pinChat() {
+        showToast('success', 'Чат бекітілді');
+    }
+
+    function deleteChat() {
+        if (confirm('Бұл чатты жою?')) {
+            showToast('warning', 'Чат жойылды');
+        }
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        if (input && input.value.trim()) {
+            showToast('success', 'Хабарлама жіберілді: ' + input.value);
+            input.value = '';
+        }
+    }
+
+    // ================================================================
+    //  INTEGRATIONS
+    // ================================================================
+    function renderIntegrations(area) {
+        const integrations = [
+            { name: 'Kaspi', icon: 'fa-shopping-bag', status: 'active', color: '#2a7de1' },
+            { name: 'Wildberries', icon: 'fa-store', status: 'active', color: '#7b3fe4' },
+            { name: 'Ozon', icon: 'fa-box-open', status: 'pending', color: '#00a3ff' },
+            { name: 'Telegram', icon: 'fa-telegram', status: 'active', color: '#0088cc' },
+            { name: 'WhatsApp', icon: 'fa-whatsapp', status: 'inactive', color: '#25d366' },
+            { name: 'Google Analytics', icon: 'fa-google', status: 'active', color: '#ea4335' },
+            { name: 'Meta Pixel', icon: 'fa-meta', status: 'pending', color: '#1877f2' },
+            { name: '1C', icon: 'fa-database', status: 'active', color: '#1a5fb4' }
+        ];
+        area.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+                ${integrations.map(i => `
+                    <div class="stat-card" style="text-align:center;">
+                        <div style="font-size:40px;margin-bottom:12px;color:${i.color};"><i class="fab ${i.icon}"></i></div>
+                        <div style="font-weight:700;font-size:16px;">${i.name}</div>
+                        <div style="margin-top:8px;"><span class="status-badge ${i.status}">${i.status}</span></div>
+                        <div style="display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap;">
+                            <button onclick="configureIntegration('${i.name}')" style="padding:6px 16px;background:var(--primary-gradient);color:#fff;border-radius:6px;font-weight:600;">
+                                <i class="fas fa-cog"></i> Баптау
+                            </button>
+                            ${i.status === 'active' ? 
+                                `<button onclick="disconnectIntegration('${i.name}')" style="padding:6px 16px;background:var(--danger);color:#fff;border-radius:6px;font-weight:600;">
+                                    <i class="fas fa-plug"></i> Ажырату
+                                </button>` :
+                                `<button onclick="connectIntegration('${i.name}')" style="padding:6px 16px;background:var(--success);color:#fff;border-radius:6px;font-weight:600;">
+                                    <i class="fas fa-link"></i> Қосу
+                                </button>`
+                            }
+                            <button onclick="syncIntegration('${i.name}')" style="padding:6px 12px;background:var(--gray-100);border-radius:6px;">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function configureIntegration(name) {
+        showToast('info', `${name} баптаулары`);
+    }
+
+    function connectIntegration(name) {
+        showToast('success', `${name} сәтті қосылды!`);
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Интеграция', details: `Қосылды: ${name}` });
+    }
+
+    function disconnectIntegration(name) {
+        if (confirm(`${name} ажырату?`)) {
+            showToast('warning', `${name} ажыратылды`);
+            db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Интеграция', details: `Ажыратылды: ${name}` });
+        }
+    }
+
+    function syncIntegration(name) {
+        showToast('info', `${name} синхрондалуда...`);
+        setTimeout(() => showToast('success', `${name} синхрондау аяқталды`), 1500);
+    }
+
+    // ================================================================
+    //  FILES
+    // ================================================================
+    function renderFiles(area) {
+        const files = db.get('files');
+        area.innerHTML = `
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas fa-folder"></i> Файлдар</h3>
+                    <div class="filters">
+                        <button onclick="uploadNewFile()" style="background:var(--primary-gradient);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-upload"></i> Жүктеу
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table><thead><tr><th>Атауы</th><th>Өлшемі</th><th>Түрі</th><th>Күні</th><th>Әрекеттер</th></tr></thead>
+                    <tbody>${files.map(f => `
+                        <tr>
+                            <td><i class="fas fa-file" style="color:var(--primary);"></i> ${f.name}</td>
+                            <td>${f.size}</td>
+                            <td><span class="status-badge active">${f.type}</span></td>
+                            <td>${new Date(f.created).toLocaleDateString()}</td>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="btn-view" onclick="downloadFile(${f.id})"><i class="fas fa-download"></i></button>
+                                    <button class="btn-edit" onclick="renameFile(${f.id})"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-delete" onclick="deleteFileItem(${f.id})"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}</tbody></table>
+                </div>
+            </div>
+        `;
+    }
+
+    function uploadNewFile() {
+        const name = prompt('Файл атауын енгізіңіз:');
+        if (name) {
+            const file = db.insert('files', { 
+                name, size: (Math.random() * 5 + 1).toFixed(1) + ' MB', 
+                type: ['pdf', 'xlsx', 'docx', 'png', 'jpg'][Math.floor(Math.random() * 5)]
+            });
+            if (file) {
+                showToast('success', `"${name}" файлы жүктелді`);
+                db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Файл жүктеу', details: name });
+            }
+            renderContent(currentModule);
+        }
+    }
+
+    function downloadFile(id) {
+        const file = db.find('files', id);
+        if (file) {
+            showToast('info', `${file.name} жүктелуде`);
+        }
+    }
+
+    function renameFile(id) {
+        const file = db.find('files', id);
+        if (!file) return;
+        const newName = prompt('Файлдың жаңа атауы:', file.name);
+        if (newName) {
+            db.update('files', id, { name: newName });
+            showToast('success', `Файл "${newName}" деп өзгертілді`);
+            renderContent(currentModule);
+        }
+    }
+
+    function deleteFileItem(id) {
+        if (!confirm(`#${id} файлын жою?`)) return;
+        db.delete('files', id);
+        showToast('success', `#${id} файлы жойылды`);
+        renderContent(currentModule);
+    }
+
+    // ================================================================
+    //  LOGS
+    // ================================================================
+    function renderLogs(area) {
+        const logs = db.get('logs').slice(0, 30);
+        area.innerHTML = `
+            <div class="table-wrapper">
+                <div class="table-header">
+                    <h3><i class="fas fa-history"></i> Әрекеттер журналы</h3>
+                    <div class="filters">
+                        <input type="text" id="logSearch" placeholder="🔍 Іздеу..." oninput="filterLogs()" style="min-width:200px;" />
+                        <button onclick="exportTable('logs')" style="background:var(--gray-100);padding:8px 18px;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        ${currentUser?.role === 'admin' ? `
+                            <button onclick="clearAllLogs()" style="background:var(--danger);color:#fff;padding:8px 18px;border-radius:8px;font-weight:600;">
+                                <i class="fas fa-trash"></i> Тазалау
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="table-container" id="logContainer">
+                    <table><thead><tr><th>Пайдаланушы</th><th>Әрекет</th><th>Толықтыру</th><th>Уақыты</th></tr></thead>
+                    <tbody>${logs.map(l => `
+                        <tr>
+                            <td><i class="fas fa-user-circle"></i> ${l.user}</td>
+                            <td><span class="status-badge ${l.action === 'Жүйеге кіру' ? 'active' : 'pending'}">${l.action}</span></td>
+                            <td>${l.details || '—'}</td>
+                            <td>${new Date(l.created).toLocaleString()}</td>
+                        </tr>
+                    `).join('')}</tbody></table>
+                </div>
+            </div>
+        `;
+    }
+
+    function filterLogs() {
+        const search = document.getElementById('logSearch').value.toLowerCase();
+        const logs = db.get('logs').filter(l =>
+            l.user.toLowerCase().includes(search) ||
+            l.action.toLowerCase().includes(search) ||
+            (l.details || '').toLowerCase().includes(search)
+        );
+        const container = document.getElementById('logContainer');
+        container.innerHTML = `
+            <table><thead><tr><th>Пайдаланушы</th><th>Әрекет</th><th>Толықтыру</th><th>Уақыты</th></tr></thead>
+            <tbody>${logs.slice(0, 30).map(l => `
+                <tr><td><i class="fas fa-user-circle"></i> ${l.user}</td>
+                <td><span class="status-badge ${l.action === 'Жүйеге кіру' ? 'active' : 'pending'}">${l.action}</span></td>
+                <td>${l.details || '—'}</td>
+                <td>${new Date(l.created).toLocaleString()}</td></tr>
+            `).join('')}</tbody></table>
+        `;
+    }
+
+    function clearAllLogs() {
+        if (!confirm('Барлық әрекеттер журналын тазалау? Бұл әрекетті қайтару мүмкін емес!')) return;
+        db.data.logs = [];
+        db.save();
+        showToast('success', 'Әрекеттер журналы тазаланды');
+        renderContent(currentModule);
+    }
+
+    // ================================================================
+    //  SETTINGS
+    // ================================================================
+    function renderSettings(area) {
+        const settings = db.get('settings');
+        const getVal = (key) => settings.find(s => s.key === key)?.value || '';
+        
+        area.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:20px;">
+                <div class="table-wrapper" style="padding:24px;">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-building"></i> Компания</h3>
+                    <div class="form-group"><label>Компания атауы</label>
+                        <input type="text" id="set_company_name" value="${getVal('company_name')}" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;" /></div>
+                    <div class="form-group"><label>Салық мөлшерлемесі (%)</label>
+                        <input type="number" id="set_tax" value="${getVal('tax_rate') || '12'}" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;" /></div>
+                    <button onclick="saveSettings()" style="margin-top:12px;padding:10px 20px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">
+                        <i class="fas fa-save"></i> Сақтау
+                    </button>
+                </div>
+                <div class="table-wrapper" style="padding:24px;">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-globe"></i> Локализация</h3>
+                    <div class="form-group"><label>Тілі</label>
+                        <select id="set_language" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;">
+                            <option value="kk" ${getVal('language') === 'kk' ? 'selected' : ''}>Қазақша</option>
+                            <option value="ru" ${getVal('language') === 'ru' ? 'selected' : ''}>Русский</option>
+                            <option value="en" ${getVal('language') === 'en' ? 'selected' : ''}>English</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Валюта</label>
+                        <select id="set_currency" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;">
+                            <option value="₸" ${getVal('currency') === '₸' ? 'selected' : ''}>₸ Тенге</option>
+                            <option value="$" ${getVal('currency') === '$' ? 'selected' : ''}>$ Доллар</option>
+                            <option value="€" ${getVal('currency') === '€' ? 'selected' : ''}>€ Евро</option>
+                        </select>
+                    </div>
+                    <button onclick="saveSettings()" style="margin-top:12px;padding:10px 20px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">
+                        <i class="fas fa-save"></i> Сақтау
+                    </button>
+                </div>
+                <div class="table-wrapper" style="padding:24px;">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-palette"></i> Тақырып</h3>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <button onclick="changeTheme('light')" style="flex:1;padding:12px;border:2px solid ${getVal('theme') === 'light' ? 'var(--primary)' : 'var(--gray-200)'};border-radius:8px;background:#fff;color:#000;font-weight:600;">
+                            ☀️ Ашық
+                        </button>
+                        <button onclick="changeTheme('dark')" style="flex:1;padding:12px;border:2px solid ${getVal('theme') === 'dark' ? 'var(--primary)' : 'var(--gray-200)'};border-radius:8px;background:#1a1a2e;color:#fff;font-weight:600;">
+                            🌙 Қараңғы
+                        </button>
+                        <button onclick="changeTheme('system')" style="flex:1;padding:12px;border:2px solid ${getVal('theme') === 'system' ? 'var(--primary)' : 'var(--gray-200)'};border-radius:8px;background:var(--gray-100);font-weight:600;">
+                            ⚙️ Жүйелік
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper" style="padding:24px;">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-shield-alt"></i> Қауіпсіздік</h3>
+                    <div class="form-group"><label>Екі факторлы аутентификация</label>
+                        <select id="set_2fa" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;">
+                            <option value="0">Өшірулі</option>
+                            <option value="1">Қосылған</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>API кілті</label>
+                        <input type="text" value="sk_live_${Math.random().toString(36).substr(2, 16)}" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;" readonly />
+                    </div>
+                    <button onclick="saveSettings()" style="margin-top:12px;padding:10px 20px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">
+                        <i class="fas fa-save"></i> Сақтау
+                    </button>
+                    <button onclick="resetAllSettings()" style="margin-top:8px;padding:8px 16px;background:var(--danger);color:#fff;border-radius:8px;font-weight:600;margin-left:8px;">
+                        <i class="fas fa-undo"></i> Қалпына келтіру
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function saveSettings() {
+        const settings = [
+            { key: 'company_name', value: document.getElementById('set_company_name').value },
+            { key: 'language', value: document.getElementById('set_language').value },
+            { key: 'currency', value: document.getElementById('set_currency').value },
+            { key: 'tax_rate', value: document.getElementById('set_tax').value }
+        ];
+        for (const s of settings) {
+            const existing = db.get('settings').find(item => item.key === s.key);
+            if (existing) {
+                db.update('settings', existing.id, { value: s.value });
+            } else {
+                db.insert('settings', s);
+            }
+        }
+        showToast('success', 'Баптаулар сақталды');
+        db.insert('logs', { user: currentUser?.name || 'Жүйе', action: 'Баптаулар', details: 'Жаңартылды' });
+    }
+
+    function resetAllSettings() {
+        if (!confirm('Барлық баптауларды бастапқы күйге қалпына келтіру?')) return;
+        for (const s of db.get('settings')) {
+            db.delete('settings', s.id);
+        }
+        db.insert('settings', { key: 'company_name', value: 'E-Commerce PRO' });
+        db.insert('settings', { key: 'currency', value: '₸' });
+        db.insert('settings', { key: 'language', value: 'kk' });
+        db.insert('settings', { key: 'tax_rate', value: '12' });
+        db.insert('settings', { key: 'theme', value: 'light' });
+        showToast('success', 'Баптаулар бастапқы күйге қалпына келтірілді');
+        renderContent(currentModule);
+    }
+
+    function changeTheme(theme) {
+        showToast('info', `Тақырып "${theme}" деп өзгертілді`);
+        const setting = db.get('settings').find(s => s.key === 'theme');
+        if (setting) {
+            db.update('settings', setting.id, { value: theme });
+        } else {
+            db.insert('settings', { key: 'theme', value: theme });
+        }
+        if (theme === 'dark') {
+            document.body.style.background = '#0f172a';
+            document.body.style.color = '#f1f5f9';
+        } else {
+            document.body.style.background = '';
+            document.body.style.color = '';
+        }
+    }
+
+    // ================================================================
+    //  PROFILE
+    // ================================================================
+    function renderProfile(area) {
+        const user = currentUser || db.get('users')[0] || { 
+            name: 'Әкімші', email: 'admin@crm.kz', role: 'admin', 
+            phone: '+7 777 777 77 77', emailVerified: true, phoneVerified: false,
+            twoFA: false, lastLogin: new Date().toISOString()
+        };
+        
+        area.innerHTML = `
+            <div style="display:grid;grid-template-columns:280px 1fr;gap:20px;">
+                <div class="table-wrapper" style="padding:24px;text-align:center;">
+                    <div style="width:120px;height:120px;border-radius:50%;background:var(--primary-gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:700;margin:0 auto 16px;position:relative;">
+                        ${user.name ? user.name[0] : 'A'}
+                        <button onclick="changeProfileAvatar()" style="position:absolute;bottom:0;right:0;background:var(--primary);color:#fff;border-radius:50%;width:36px;height:36px;font-size:14px;border:2px solid #fff;">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <h2>${user.name}</h2>
+                    <p style="color:var(--gray-500);"><span class="status-badge active">${user.role}</span></p>
+                    <p style="color:var(--gray-500);"><i class="fas fa-envelope"></i> ${user.email}</p>
+                    <p style="color:var(--gray-500);"><i class="fas fa-phone"></i> ${user.phone || '—'}</p>
+                    <p style="color:var(--gray-500);font-size:12px;">Соңғы кіру: ${user.lastLogin ? new Date(user.lastLogin).toLocaleString() : '—'}</p>
+                    <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+                        <button onclick="changePassword()" style="padding:8px 20px;background:var(--gray-100);border-radius:8px;font-weight:600;">
+                            <i class="fas fa-key"></i> Құпия сөзді өзгерту
+                        </button>
+                        <button onclick="enable2FA()" style="padding:8px 20px;background:${user.twoFA ? 'var(--success)' : 'var(--gray-100)'};border-radius:8px;font-weight:600;color:${user.twoFA ? '#fff' : 'inherit'};">
+                            <i class="fas fa-shield-alt"></i> ${user.twoFA ? '2FA қосылған' : '2FA қосу'}
+                        </button>
+                        <button onclick="logout()" style="padding:8px 20px;background:var(--danger);color:#fff;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-sign-out-alt"></i> Жүйеден шығу
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper" style="padding:24px;">
+                    <h3 style="margin-bottom:16px;"><i class="fas fa-user-edit"></i> Жеке деректер</h3>
+                    <div class="form-group"><label>Аты-жөні</label>
+                        <input type="text" id="profile_name" value="${user.name}" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;" /></div>
+                    <div class="form-group"><label>Пошта</label>
+                        <input type="email" id="profile_email" value="${user.email}" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;" />
+                        ${user.emailVerified ? '<span style="color:var(--success);font-size:12px;">✅ Расталған</span>' : '<span style="color:var(--warning);font-size:12px;">⏳ Расталмаған <button onclick="verifyEmail()" style="color:var(--primary);background:transparent;">Растау</button></span>'}</div>
+                    <div class="form-group"><label>Телефон</label>
+                        <input type="text" id="profile_phone" value="${user.phone || ''}" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;" />
+                        ${user.phoneVerified ? '<span style="color:var(--success);font-size:12px;">✅ Расталған</span>' : '<span style="color:var(--warning);font-size:12px;">⏳ Расталмаған <button onclick="verifyPhone()" style="color:var(--primary);background:transparent;">Растау</button></span>'}</div>
+                    <div class="form-group"><label>Интерфейс тілі</label>
+                        <select id="profile_language" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:8px;width:100%;">
+                            <option value="kk">Қазақша</option>
+                            <option value="ru">Русский</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Хабарландыру баптаулары</label>
+                        <div style="display:flex;gap:16px;flex-wrap:wrap;padding:8px 0;">
+                            <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" checked /> Пошта</label>
+                            <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" checked /> SMS</label>
+                            <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" /> Push</label>
+                            <label style="display:flex;align-items:center;gap:6px;"><input type="checkbox" checked /> Жүйелік</label>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+                        <button onclick="saveProfile()" style="padding:10px 28px;background:var(--primary-gradient);color:#fff;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-save"></i> Сақтау
+                        </button>
+                        <button onclick="showToast('info', 'Сеанстар тарихы')" style="padding:10px 20px;background:var(--gray-100);border-radius:8px;font-weight:600;">
+                            <i class="fas fa-history"></i> Кіру тарихы
+                        </button>
+                        <button onclick="showToast('warning', 'Барлық сеанстар аяқталды')" style="padding:10px 20px;background:var(--warning);color:#fff;border-radius:8px;font-weight:600;">
+                            <i class="fas fa-sign-out-alt"></i> Барлық сеанстарды аяқтау
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function changeProfileAvatar() {
+        showToast('info', 'Жаңа профиль суретін таңдаңыз');
+    }
+
+    function verifyEmail() {
+        showToast('success', 'Пошта расталды!');
+        if (currentUser) {
+            db.update('users', currentUser.id, { emailVerified: true });
+        }
+        renderContent(currentModule);
+    }
+
+    function verifyPhone() {
+        showToast('success', 'Телефон расталды!');
+        if (currentUser) {
+            db.update('users', currentUser.id, { phoneVerified: true });
+        }
+        renderContent(currentModule);
+    }
+
+    function enable2FA() {
+        if (currentUser) {
+            const newState = !currentUser.twoFA;
+            db.update('users', currentUser.id, { twoFA: newState });
+            currentUser = db.find('users', currentUser.id);
+            showToast('success', `2FA ${newState ? 'қосылды' : 'өшірілді'}`);
+            renderContent(currentModule);
+        }
+    }
+
+    function changePassword() {
+        const old = prompt('Ағымдағы құпия сөзді енгізіңіз:');
+        if (old && currentUser) {
+            if (old === currentUser.password) {
+                const newP = prompt('Жаңа құпия сөзді енгізіңіз:');
+                if (newP) {
+                    const confirmP = prompt('Жаңа құпия сөзді растаңыз:');
+                    if (newP === confirmP) {
+                        db.update('users', currentUser.id, { password: newP });
+                        showToast('success', 'Құпия сөз өзгертілді');
+                        db.insert('logs', { user: currentUser.name, action: 'Қауіпсіздік', details: 'Құпия сөзді өзгерту' });
+                    } else {
+                        showToast('error', 'Құпия сөздер сәйкес келмейді');
+                    }
+                }
+            } else {
+                showToast('error', 'Қате ағымдағы құпия сөз');
+            }
+        }
+    }
+
+    function saveProfile() {
+        const name = document.getElementById('profile_name').value;
+        const email = document.getElementById('profile_email').value;
+        const phone = document.getElementById('profile_phone').value;
+        if (currentUser) {
+            db.update('users', currentUser.id, { name, email, phone });
+            document.getElementById('userNameDisplay').textContent = name;
+            document.getElementById('userAvatar').textContent = name ? name[0] : 'A';
+            currentUser = db.find('users', currentUser.id);
+            showToast('success', 'Профиль жаңартылды');
+            db.insert('logs', { user: currentUser.name, action: 'Профиль', details: 'Деректерді жаңарту' });
+        }
+        renderContent(currentModule);
+    }
+
+    // ================================================================
+    //  SIDEBAR TOGGLE
+    // ================================================================
+    function toggleSidebar(open) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (open === undefined) {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        } else if (open) {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+        } else {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+    }
+
+    // ================================================================
+    //  INIT - Жүйені іске қосу
+    // ================================================================
+    // Демо үшін автоматты кіру
+    setTimeout(() => {
+        const demoUser = db.get('users').find(u => u.email === 'admin@crm.kz');
+        if (demoUser) {
+            currentUser = demoUser;
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+            document.getElementById('userNameDisplay').textContent = demoUser.name;
+            document.getElementById('userAvatar').textContent = demoUser.name ? demoUser.name[0] : 'A';
+            renderSidebar();
+            renderContent('dashboard');
+            console.log('✅ Пайдаланушы үшін автоматты кіру орындалды:', demoUser.name);
+        }
+    }, 300);
+
+    // Модальды оверлей арқылы жабу
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // Консоль үшін жаһандық функциялар
+    window.db = db;
+    window.showToast = showToast;
+    window.navigateTo = navigateTo;
+
+    console.log('🚀 Enterprise CRM PRO v3.0 жүктелді!');
+    console.log('📊 Модульдер саны: 31');
+    console.log('📦 Кестелер саны: ' + db.tables.length);
+    console.log('💾 Деректер localStorage: enterprise_crm_data_v3');
+    console.log('👤 Пайдаланушылар: ' + db.count('users'));
+    console.log('📦 Тауарлар: ' + db.count('products'));
+    console.log('🛒 Тапсырыстар: ' + db.count('orders'));
+    console.log('👥 Клиенттер: ' + db.count('customers'));
+    console.log('📋 Барлығы: ' + db.tables.reduce((s, t) => s + db.count(t), 0));
+</script>
+</body>
+</html>
